@@ -1,0 +1,11 @@
+{
+  "name": "family-app-api",
+  "version": "1.0.0",
+  "description": "Family app API",
+  "main": "index.js",
+  "author": "Daniel Drózdzel",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.17.3"
+  }
+}
