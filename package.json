@@ -5,7 +5,16 @@
   "main": "index.js",
   "author": "Daniel Drózdzel",
   "license": "MIT",
+  "scripts": {
+    "build": "tsc",
+    "prebuild": "npm run clean",
+    "clean": "rm -rf ./dist",
+    "start": "ts-node -r dotenv/config src/app.ts",
+    "watch": "ts-node-dev -r dotenv/config --respawn src/app.ts",
+    "format": "prettier --print-width 120 --write 'src/**/*.ts'"
+  },
   "dependencies": {
+    "dotenv": "^16.0.0",
     "express": "^4.17.3",
     "mongodb": "^4.3.1"
   },
