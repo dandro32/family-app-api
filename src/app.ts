@@ -1,9 +1,10 @@
 import express from "express";
 import basicAuth from "express-basic-auth";
-
 import { Db } from "mongodb";
 
-const authPass: string = process.env.BASIC_AUTH as string ;
+import { errorHandler, notFound } from "./errors";
+
+const authPass: string = process.env.BASIC_AUTH as string;
 
 export const appFactory = (db: Db) => {
   const app = express();
@@ -19,6 +20,9 @@ export const appFactory = (db: Db) => {
   app.get("/", function (req, res, next) {
     res.send("Family-app is working");
   });
+
+  app.use(notFound);
+  app.use(errorHandler);
 
   return app;
 };
