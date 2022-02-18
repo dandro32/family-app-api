@@ -7,5 +7,5 @@ yarn-lock.json
 .env
 
 #logs
-src/logs.log
-src/error.log
+logs.log
+error.log
