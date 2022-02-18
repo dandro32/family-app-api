@@ -5,3 +5,7 @@ yarn-lock.json
 
 #env
 .env
+
+#logs
+src/logs.log
+src/error.log
