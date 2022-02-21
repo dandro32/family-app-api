@@ -8,6 +8,7 @@
   "license": "MIT",
   "scripts": {
     "postinstall": "tsc",
+    "build": "tsc",
     "watch-node": "ts-node-dev -r dotenv/config --respawn dist/server.js",
     "watch-ts": "tsc -w",
     "prebuild": "npm run clean",
