@@ -4,9 +4,12 @@
   "description": "Family app API",
   "main": "index.js",
   "author": "Daniel Drózdzel",
+  "engines": { "node": "14.18.1" },
   "license": "MIT",
   "scripts": {
-    "build": "tsc",
+    "postinstall": "tsc",
+    "watch-node": "ts-node-dev -r dotenv/config --respawn dist/server.js",
+    "watch-ts": "tsc -w",
     "prebuild": "npm run clean",
     "clean": "rm -rf ./dist",
     "start": "ts-node -r dotenv/config src/server.ts",

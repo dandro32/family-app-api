@@ -4,7 +4,7 @@
       "version": "0.1.0",
       "description": "Family App swagger"
     },
-    "host": "localhost:3000",
+    "host": "family-app-api.herokuapp.com",
     "basePath": "/",
     "swagger": "2.0",
     "paths": { },
