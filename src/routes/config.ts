@@ -1,8 +1,11 @@
-const routes = {
+const routes: Record<string, string> = {
     CATEGORIES: '/categories',
-    CATEGORY_ADD: '/category/add',
-    CATEGORY_GET: '/category/:id',
-    TASK: '/tasks'
+    CATEGORY: '/category/:categoryId',
+    TASKS: '/tasks/:categoryId',
+    TASK: '/tasks/:taskId',
+    TASK_DONE: '/tasks/:taskId/done',
+    USERS: '/users',
+    USERS_ME: '/users/me',
 }
 
 export default routes;
