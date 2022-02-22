@@ -6,13 +6,15 @@ import swaggerDocument from "./config/swagger.json";
 
 import { errorLogger, logger } from "./logger";
 import { errorHandler, notFound } from "./errors";
-import routeFactory from "./routes";
+import {usersRouteFactory} from "./routes";
+
+const API_ROUTE = '/api';
 
 const authPass: string = process.env.BASIC_AUTH as string;
 
 export const appFactory = (db: Db) => {
   const app = express();
-  const apiRoutes = routeFactory(db);
+  const usersRoutes = usersRouteFactory(db);
 
   app.use("/swagger-ui", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
@@ -30,7 +32,7 @@ export const appFactory = (db: Db) => {
     res.send("Family-app is working");
   });
 
-  app.use("/api", apiRoutes);
+  app.use(API_ROUTE, usersRoutes);
 
   app.use(errorLogger);
 

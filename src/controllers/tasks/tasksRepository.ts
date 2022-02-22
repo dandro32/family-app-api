@@ -1,4 +1,4 @@
-import { Db, ObjectId } from "mongodb";
+import { Db } from "mongodb";
 import { TaskRepository } from "../../models/task";
 
 const taskRepositoryFactory = (db: Db): TaskRepository => {

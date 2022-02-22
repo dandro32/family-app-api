@@ -1,11 +1,12 @@
 import { Router } from "express";
 import { Db } from "mongodb";
+import usersRepositoryFactory from "../controllers/users/usersRepository";
+import usersControllerFactory from "../controllers/users";
 
 import routes from "./config";
 
-const routeFactory = (db: Db) => {
-  const { CATEGORY, CATEGORIES, TASKS, TASK, TASK_DONE, USERS, USERS_ME } =
-    routes;
+const taskRouteFactory = (db: Db) => {
+  const { TASKS, TASK, TASK_DONE } = routes;
   const router: Router = Router();
 
   // TODO: Add repository and services
@@ -13,4 +14,16 @@ const routeFactory = (db: Db) => {
   return router;
 };
 
-export default routeFactory;
+const usersRouteFactory = (db: Db) => {
+  const { USERS, USERS_ME } = routes;
+  const router: Router = Router();
+  const usersRepository = usersRepositoryFactory(db);
+  const { getUsers, getMe } = usersControllerFactory(usersRepository);
+
+  router.get(USERS, getUsers);
+  router.get(USERS_ME, getMe);
+
+  return router;
+};
+
+export { taskRouteFactory, usersRouteFactory };
