@@ -5,7 +5,7 @@ const routes: Record<string, string> = {
     TASK: '/tasks/:taskId',
     TASK_DONE: '/tasks/:taskId/done',
     USERS: '/users',
-    USERS_ME: '/users/me',
+``    USERS_ME: '/users/:id',
 }
 
 export default routes;

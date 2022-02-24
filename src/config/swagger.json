@@ -1,15 +1,30 @@
 {
-    "info": {
-      "title": "Family App API",
-      "version": "0.1.0",
-      "description": "Family App swagger"
-    },
-    "host": "family-app-api.herokuapp.com",
-    "basePath": "/",
-    "swagger": "2.0",
-    "paths": { },
-    "definitions": { },
-    "responses": { },
-    "parameters": { },
-    "securityDefinitions": { }
-  }
+  "info": {
+    "title": "Family App API",
+    "version": "0.1.0",
+    "description": "Family App swagger"
+  },
+  "host": "family-app-api.herokuapp.com",
+  "basePath": "/api",
+  "swagger": "2.0",
+  "paths": {
+    "/users": {
+      "get": {
+        "operationId": "getUsers",
+        "summary": "get list of users",
+        "description": "Get list of users",
+        "produces": "application/json",
+        "responses": {
+          "200": {
+            "description": "Success response",
+            "examples": "{id: DANIEL, name: Daniel}"
+          }
+        }
+      }
+    }
+  },
+  "definitions": {},
+  "responses": {},
+  "parameters": {},
+  "securityDefinitions": {}
+}
