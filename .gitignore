@@ -9,3 +9,6 @@ yarn-lock.json
 #logs
 logs.log
 error.log
+
+#dist
+dist
