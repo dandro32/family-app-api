@@ -11,6 +11,9 @@ const usersRepositoryFactory = (db: Db): UsersRepository => {
     async findAll() {
       return users.find({}, { projection: { _id: false } }).toArray();
     },
+    async create(credentials) {
+      await users.insertOne(credentials);
+    },
   };
 };
 

@@ -18,9 +18,10 @@ const usersRouteFactory = (db: Db) => {
   const { USERS, USERS_ME } = routes;
   const router: Router = Router();
   const usersRepository = usersRepositoryFactory(db);
-  const { getUsers, getMe } = usersControllerFactory(usersRepository);
+  const { createUser, getUsers, getMe } = usersControllerFactory(usersRepository);
 
   router.get(USERS, getUsers);
+  router.post(USERS, createUser)
   router.get(USERS_ME, getMe);
 
   return router;
