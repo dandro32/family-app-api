@@ -5,10 +5,10 @@ const usersRepositoryFactory = (db: Db): UsersRepository => {
   const users = db.collection("users");
 
   return {
-    async findOne(userId) {
+    async findOne(username) {
       return users.findOne(
-        { id: userId },
-        { projection: { _id: 0, password: 0 } }
+        { username: username },
+        { projection: { _id: 0, } }
       );
     },
     async findAll() {

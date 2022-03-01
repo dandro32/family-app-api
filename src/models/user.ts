@@ -1,16 +1,16 @@
 import { WithId, Document } from "mongodb";
 
-export interface User {
-  id: string;
-  name: string;
+export interface CreateUser {
+  username: string;
+  password: string;
 }
 
-export interface CreateUser extends User {
-  password: string;
+export interface User extends CreateUser {
+  id: string;
 }
 
 export interface UsersRepository {
   findAll(): Promise<WithId<Document>[]>; // TODO: why document not task?
-  findOne(userId: string): Promise<WithId<Document> | null>;
-  create(credentials: CreateUser): Promise<void>;
+  findOne(username: string): Promise<WithId<Document> | null>;
+  create(credentials: User): Promise<void>;
 }
