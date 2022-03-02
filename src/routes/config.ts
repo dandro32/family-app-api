@@ -1,6 +1,7 @@
 const routes: Record<string, string> = {
   CATEGORIES: "/categories",
   CATEGORY: "/category/:categoryId",
+  LOGIN: "/login",
   TASKS: "/tasks/:categoryId",
   TASK: "/tasks/:taskId",
   TASK_DONE: "/tasks/:taskId/done",
