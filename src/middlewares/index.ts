@@ -1,3 +1,4 @@
 import extractJWT from "./extractJWT";
+import withErrorHandling from "./withErrorHandling";
 
-export { extractJWT };
+export { extractJWT, withErrorHandling };

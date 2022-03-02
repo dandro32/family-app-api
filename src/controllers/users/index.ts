@@ -3,6 +3,7 @@ import { NextFunction, Request, Response } from "express";
 import jwt from "jsonwebtoken";
 import { JWT_EXPIRE_ACCESS, JWT_SECRET } from "../../config";
 import { StatusError } from "../../errors";
+import { withErrorHandling } from "../../middlewares";
 
 import { User, UsersRepository } from "../../models/user";
 
@@ -17,8 +18,8 @@ const singJWT = ({ username }: User): string => {
   });
 };
 
-const usersControllerFactory = (usersRepositoryFactory: UsersRepository) => {
-  return {
+const usersControllerFactory = (usersRepositoryFactory: UsersRepository) =>
+  withErrorHandling({
     async getUsers(_: Request, res: Response, next: NextFunction) {
       try {
         const users = await usersRepositoryFactory.findAll();
@@ -71,7 +72,6 @@ const usersControllerFactory = (usersRepositoryFactory: UsersRepository) => {
         next(e);
       }
     },
-  };
-};
+  });
 
 export default usersControllerFactory;
