@@ -16,7 +16,7 @@ const validateUser = (user: unknown) => {
     abortEarly: false,
   });
 
-  return result.error ? result.error.message : null;
+  return result?.error?.message;
 };
 
 export default validateUser;

@@ -1,7 +1,7 @@
 import bcrypt from "bcrypt";
 import { NextFunction, Request, Response } from "express";
 import jwt from "jsonwebtoken";
-import { JWT_EXPIRE_ACCESS, JWT_SECRET } from "../../config";
+import { JWT_EXPIRE_ACCESS, JWT_SECRET, RESPONSE_OK } from "../../config";
 import { StatusError } from "../../errors";
 import { withErrorHandling } from "../../middlewares";
 
@@ -42,7 +42,7 @@ const usersControllerFactory = (usersRepositoryFactory: UsersRepository) =>
       try {
         const { username, password } = req.body;
         const hashedPassword = await bcrypt.hash(password, 10);
-        const me = await usersRepositoryFactory.create({
+        await usersRepositoryFactory.create({
           id: username.toUpperCase(),
           username,
           password: hashedPassword,
@@ -50,7 +50,7 @@ const usersControllerFactory = (usersRepositoryFactory: UsersRepository) =>
         const token = singJWT(req.body);
 
         res.cookie("token", token, { maxAge: JWT_EXPIRE_ACCESS * 1000 });
-        res.json(me);
+        res.json(RESPONSE_OK);
       } catch (e) {
         next(e);
       }
@@ -59,14 +59,20 @@ const usersControllerFactory = (usersRepositoryFactory: UsersRepository) =>
       try {
         const { username, password } = req.body;
         const user = await usersRepositoryFactory.findOne(username);
+
+        if (!user) {
+          throw new StatusError("User does not exists. Please register", 403);
+        }
+
         const match = await bcrypt.compare(password, user?.password);
 
         if (match) {
           const token = singJWT(req.body);
 
           res.cookie("token", token, { maxAge: JWT_EXPIRE_ACCESS * 1000 });
+          res.json(RESPONSE_OK);
         } else {
-          throw new StatusError("User cannot be sign", 401);
+          throw new StatusError("Wrong password. Please try again", 403);
         }
       } catch (e) {
         next(e);

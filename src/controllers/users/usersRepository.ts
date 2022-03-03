@@ -6,10 +6,7 @@ const usersRepositoryFactory = (db: Db): UsersRepository => {
 
   return {
     async findOne(username) {
-      return users.findOne(
-        { username: username },
-        { projection: { _id: 0, } }
-      );
+      return users.findOne({ username }, { projection: { _id: 0 } });
     },
     async findAll() {
       return users.find({}, { projection: { _id: 0, password: 0 } }).toArray();
