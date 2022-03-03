@@ -1,18 +1,22 @@
-import { z } from "zod";
+import Joi from "joi";
 
-const UserSchema = z.object({
-  username: z.string().min(3).max(100),
-  password: z
-    .string()
+const UserSchema = Joi.object({
+  username: Joi.string().required().min(3).max(100),
+  password: Joi.string()
+    .required()
     .min(8)
     .max(100)
     .regex(/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/),
 });
 
-export type UserSchemaDTO = z.infer<typeof UserSchema>;
-
 const validateUser = (user: unknown) => {
-  return UserSchema.safeParse(user);
+  const result = UserSchema.validate(user, {
+    allowUnknown: false,
+    convert: true,
+    abortEarly: false,
+  });
+
+  return result.error ? result.error.message : null;
 };
 
 export default validateUser;

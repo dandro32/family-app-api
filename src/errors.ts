@@ -12,10 +12,12 @@ export const notFound: RequestHandler = (req, res, next) => {
 };
 
 export const errorHandler: ErrorRequestHandler = (err, req, res, next) => {
-  console.log(err.stack);
+  console.log("-------------------");
+  console.log(err);
+  console.log("-------------------");
   res.status(err.status || 500);
   res.json({
-    message: err.message,
+    message: err.error,
     error: process.env.NODE_ENV === "production" ? {} : err.stack,
   });
 };
