@@ -5,11 +5,14 @@ const usersRepositoryFactory = (db: Db): UsersRepository => {
   const users = db.collection("users");
 
   return {
-    async findOne(userId) {
-      return users.findOne({ id: userId }, { projection: { _id: 0 } });
+    async findOne(username) {
+      return users.findOne({ username }, { projection: { _id: 0 } });
     },
     async findAll() {
-      return users.find({}, { projection: { _id: false } }).toArray();
+      return users.find({}, { projection: { _id: 0, password: 0 } }).toArray();
+    },
+    async create(credentials) {
+      await users.insertOne(credentials);
     },
   };
 };

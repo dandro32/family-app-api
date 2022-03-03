@@ -1,8 +1,25 @@
-import { UsersRepository } from "../../models/user";
+import bcrypt from "bcrypt";
 import { NextFunction, Request, Response } from "express";
+import jwt from "jsonwebtoken";
+import { JWT_EXPIRE_ACCESS, JWT_SECRET, RESPONSE_OK } from "../../config";
+import { StatusError } from "../../errors";
+import { withErrorHandling } from "../../middlewares";
 
-const usersControllerFactory = (usersRepositoryFactory: UsersRepository) => {
-  return {
+import { User, UsersRepository } from "../../models/user";
+
+const singJWT = ({ username }: User): string => {
+  const timeNow: number = new Date().getTime();
+  const expirationTime: number = timeNow + JWT_EXPIRE_ACCESS * 1000;
+  const expirationTimeInSeconds: number = Math.floor(expirationTime / 1000);
+
+  return jwt.sign({ username }, JWT_SECRET, {
+    algorithm: "HS256",
+    expiresIn: expirationTimeInSeconds,
+  });
+};
+
+const usersControllerFactory = (usersRepositoryFactory: UsersRepository) =>
+  withErrorHandling({
     async getUsers(_: Request, res: Response, next: NextFunction) {
       try {
         const users = await usersRepositoryFactory.findAll();
@@ -14,14 +31,53 @@ const usersControllerFactory = (usersRepositoryFactory: UsersRepository) => {
     },
     async getMe(req: Request, res: Response, next: NextFunction) {
       try {
-        const me = await usersRepositoryFactory.findOne(req.params.id);
+        const me = await usersRepositoryFactory.findOne(req.params.username);
 
         res.json(me);
       } catch (e) {
         next(e);
       }
     },
-  };
-};
+    async createUser(req: Request, res: Response, next: NextFunction) {
+      try {
+        const { username, password } = req.body;
+        const hashedPassword = await bcrypt.hash(password, 10);
+        await usersRepositoryFactory.create({
+          id: username.toUpperCase(),
+          username,
+          password: hashedPassword,
+        });
+        const token = singJWT(req.body);
+
+        res.cookie("token", token, { maxAge: JWT_EXPIRE_ACCESS * 1000 });
+        res.json(RESPONSE_OK);
+      } catch (e) {
+        next(e);
+      }
+    },
+    async login(req: Request, res: Response, next: NextFunction) {
+      try {
+        const { username, password } = req.body;
+        const user = await usersRepositoryFactory.findOne(username);
+
+        if (!user) {
+          throw new StatusError("User does not exists. Please register", 403);
+        }
+
+        const match = await bcrypt.compare(password, user?.password);
+
+        if (match) {
+          const token = singJWT(req.body);
+
+          res.cookie("token", token, { maxAge: JWT_EXPIRE_ACCESS * 1000 });
+          res.json(RESPONSE_OK);
+        } else {
+          throw new StatusError("Wrong password. Please try again", 403);
+        }
+      } catch (e) {
+        next(e);
+      }
+    },
+  });
 
 export default usersControllerFactory;

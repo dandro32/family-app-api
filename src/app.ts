@@ -17,11 +17,11 @@ export const appFactory = (db: Db) => {
 
   app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
-  app.use(
-    basicAuth({
-      users: { task_creator: authPass },
-    })
-  );
+  // app.use(  // TODO
+  //   basicAuth({
+  //     users: { task_creator: authPass },
+  //   })
+  // );
 
   app.use(express.json());
 
