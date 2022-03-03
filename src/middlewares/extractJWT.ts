@@ -9,6 +9,7 @@ const extractJWT = (req: Request, res: Response, next: NextFunction) => {
   if (token) {
     try {
       const decoded = jwt.verify(token, JWT_SECRET);
+
       res.locals.jwt = decoded;
     } catch (err) {
       const error = new StatusError(err as string, 401);
