@@ -17,7 +17,7 @@ export const appFactory = (db: Db) => {
 
   app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
-  // app.use(
+  // app.use(  // TODO
   //   basicAuth({
   //     users: { task_creator: authPass },
   //   })
