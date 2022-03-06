@@ -4,6 +4,7 @@ import jwt from "jsonwebtoken";
 
 import {
   JWT_ACCESS_SECRET,
+  JWT_ACCESS_TOKEN_EXPIRATION,
   JWT_REFRESH_SECRET,
   RESPONSE_OK,
 } from "../../config";
@@ -15,7 +16,7 @@ import { CreateUser, User, UsersRepository } from "../../models/user";
 const generateAccessToken = (username: string): string => {
   return jwt.sign({ username }, JWT_ACCESS_SECRET, {
     algorithm: "HS256",
-    expiresIn: "15s",
+    expiresIn: JWT_ACCESS_TOKEN_EXPIRATION,
   });
 };
 

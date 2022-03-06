@@ -25,7 +25,7 @@ const usersRouteFactory = (db: Db) => {
     usersControllerFactory(usersRepository);
 
   router.post(LOGIN, validateUserMiddleware, login);
-  router.delete(LOGOUT, validateTokenMiddleWare, logout);
+  router.delete(LOGOUT, extractJWT, logout);
   router.post(TOKEN, validateTokenMiddleWare, token);
   router.get(USERS_ME, extractJWT, getMe);
   router.get(USERS, extractJWT, getUsers);
