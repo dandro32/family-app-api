@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 import jwt from "jsonwebtoken";
-import { JWT_SECRET } from "../config";
+import { JWT_ACCESS_SECRET } from "../config";
 import { StatusError } from "../errors";
 
 const extractJWT = (req: Request, res: Response, next: NextFunction) => {
@@ -8,11 +8,11 @@ const extractJWT = (req: Request, res: Response, next: NextFunction) => {
 
   if (token) {
     try {
-      const decoded = jwt.verify(token, JWT_SECRET);
+      const decoded = jwt.verify(token, JWT_ACCESS_SECRET);
 
       res.locals.jwt = decoded;
     } catch (err) {
-      const error = new StatusError(err as string, 401);
+      const error = new StatusError(err as string, 403);
 
       next(error);
     }
