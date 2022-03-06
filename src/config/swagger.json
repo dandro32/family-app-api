@@ -8,6 +8,81 @@
   "basePath": "/api",
   "swagger": "2.0",
   "paths": {
+    "/login": {
+      "post": {
+        "operationId": "login",
+        "summary": "Login",
+        "description": "Login",
+        "produces": "application/json",
+        "parameters": [
+          {
+            "name": "login",
+            "in": "body",
+            "description": "Adds refresh and access token in cookies",
+            "schema": {
+              "$ref": "#/definitions/Credentials"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success response",
+            "schema": {
+              "$ref": "#/definitions/StatusOk"
+            }
+          }
+        }
+      }
+    },
+    "/token": {
+      "post": {
+        "operationId": "token",
+        "summary": "token",
+        "description": "add new access token",
+        "produces": "application/json",
+        "parameters": [
+          {
+            "name": "token",
+            "in": "body",
+            "description": "Adds new access token in cookies",
+            "schema": {
+              "$ref": "#/definitions/TokenCredentials"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success response",
+            "schema": {
+              "$ref": "#/definitions/StatusOk"
+            }
+          }
+        }
+      }
+    },
+    "/logout": {
+      "delete": {
+        "operationId": "logout",
+        "summary": "logout",
+        "description": "logout",
+        "produces": "application/json",
+        "parameters": [
+          {
+            "name": "logout",
+            "in": "body",
+            "description": "remove refresh token and logout user",
+            "schema": {
+              "$ref": "#/definitions/TokenCredentials"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Success response"
+          }
+        }
+      }
+    },
     "/users": {
       "get": {
         "operationId": "getUsers",
@@ -17,13 +92,96 @@
         "responses": {
           "200": {
             "description": "Success response",
-            "examples": "{id: DANIEL, name: Daniel}"
+            "schema": {
+              "$ref": "#/definitions/User"
+            }
+          }
+        }
+      },
+      "post": {
+        "operationId": "createUser",
+        "summary": "createUser",
+        "description": "createUser",
+        "produces": "application/json",
+        "parameters": [
+          {
+            "name": "createUser",
+            "in": "body",
+            "description": "Adds refresh and access token in cookies, add user to database",
+            "schema": {
+              "$ref": "#/definitions/Credentials"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success response",
+            "schema": {
+              "$ref": "#/definitions/StatusOk"
+            }
+          }
+        }
+      }
+    },
+    "/users/:id": {
+      "get": {
+        "operationId": "getUserData",
+        "summary": "getUserData by username",
+        "description": "getUserData by username",
+        "produces": "application/json",
+        "responses": {
+          "200": {
+            "description": "Success response",
+            "schema": {
+              "$ref": "#/definitions/User"
+            }
           }
         }
       }
     }
   },
-  "definitions": {},
+  "definitions": {
+    "Credentials": {
+      "properties": {
+        "username": {
+          "type": "string",
+          "uniqueItems": true
+        },
+        "password": {
+          "type": "string",
+          "uniqueItems": true
+        }
+      }
+    },
+    "TokenCredentials": {
+      "properties": {
+        "username": {
+          "type": "string",
+          "uniqueItems": true
+        },
+        "token": {
+          "type": "string",
+          "uniqueItems": true
+        }
+      }
+    },
+    "StatusOk": {
+      "properties": {
+        "status": {}
+      }
+    },
+    "User": {
+      "properties": {
+        "username": {
+          "type": "string"
+        }
+      }
+    },
+    "Users": {
+      "type": "array",
+      "$ref": "#/definitions/User"
+    }
+  },
   "responses": {},
   "parameters": {},
   "securityDefinitions": {}
