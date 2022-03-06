@@ -1,10 +1,10 @@
 const routes: Record<string, string> = {
-  CATEGORIES: "/categories",
-  CATEGORY: "/category/:categoryId",
   LOGIN: "/login",
+  LOGOUT: "/logout",
   TASKS: "/tasks/:categoryId",
   TASK: "/tasks/:taskId",
   TASK_DONE: "/tasks/:taskId/done",
+  TOKEN: "/token",
   USERS: "/users",
   USERS_ME: "/users/:id",
 };

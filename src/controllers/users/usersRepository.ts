@@ -14,6 +14,13 @@ const usersRepositoryFactory = (db: Db): UsersRepository => {
     async create(credentials) {
       await users.insertOne(credentials);
     },
+    async updateOne(username, updateData) {
+      const updateDoc = {
+        $set: updateData,
+      };
+
+      await users.updateOne({ username }, updateDoc);
+    },
   };
 };
 
