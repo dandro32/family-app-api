@@ -12,7 +12,9 @@ const usersRepositoryFactory = (db: Db): UsersRepository => {
       return users.findOne({ token }, { projection: { _id: 0, password: 0 } });
     },
     async findAll() {
-      return users.find({}, { projection: { _id: 0, password: 0 } }).toArray();
+      return users
+        .find({}, { projection: { _id: 0, password: 0, token: 0 } })
+        .toArray();
     },
     async create(credentials) {
       await users.insertOne(credentials);
