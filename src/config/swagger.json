@@ -16,7 +16,7 @@
         "produces": "application/json",
         "parameters": [
           {
-            "name": "login",
+            "name": "Login JSON",
             "in": "body",
             "description": "Adds refresh and access token in cookies",
             "schema": {
@@ -28,7 +28,7 @@
           "200": {
             "description": "Success response",
             "schema": {
-              "$ref": "#/definitions/StatusOk"
+              "$ref": "#/definitions/User"
             }
           }
         }
@@ -42,7 +42,7 @@
         "produces": "application/json",
         "parameters": [
           {
-            "name": "token",
+            "name": "Token JSON",
             "in": "body",
             "description": "Adds new access token in cookies",
             "schema": {
@@ -60,7 +60,7 @@
         }
       }
     },
-    "/logout": {
+    "/logout/{username}": {
       "delete": {
         "operationId": "logout",
         "summary": "logout",
@@ -68,12 +68,9 @@
         "produces": "application/json",
         "parameters": [
           {
-            "name": "logout",
-            "in": "body",
+            "name": "username",
             "description": "remove refresh token and logout user",
-            "schema": {
-              "$ref": "#/definitions/TokenCredentials"
-            }
+            "type": "string"
           }
         ],
         "responses": {
@@ -93,7 +90,7 @@
           "200": {
             "description": "Success response",
             "schema": {
-              "$ref": "#/definitions/User"
+              "$ref": "#/definitions/Users"
             }
           }
         }
@@ -105,7 +102,7 @@
         "produces": "application/json",
         "parameters": [
           {
-            "name": "createUser",
+            "name": "create JSON",
             "in": "body",
             "description": "Adds refresh and access token in cookies, add user to database",
             "schema": {
@@ -118,22 +115,6 @@
             "description": "Success response",
             "schema": {
               "$ref": "#/definitions/StatusOk"
-            }
-          }
-        }
-      }
-    },
-    "/users/:id": {
-      "get": {
-        "operationId": "getUserData",
-        "summary": "getUserData by username",
-        "description": "getUserData by username",
-        "produces": "application/json",
-        "responses": {
-          "200": {
-            "description": "Success response",
-            "schema": {
-              "$ref": "#/definitions/User"
             }
           }
         }
@@ -155,11 +136,7 @@
     },
     "TokenCredentials": {
       "properties": {
-        "username": {
-          "type": "string",
-          "uniqueItems": true
-        },
-        "token": {
+        "refreshToken": {
           "type": "string",
           "uniqueItems": true
         }

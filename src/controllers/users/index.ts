@@ -11,7 +11,7 @@ import {
 import { StatusError } from "../../errors";
 import { withErrorHandling } from "../../middlewares";
 
-import { CreateUser, User, UsersRepository } from "../../models/user";
+import { CreateUser, UsersRepository } from "../../models/user";
 
 const generateAccessToken = (username: string): string => {
   return jwt.sign({ username }, JWT_ACCESS_SECRET, {
@@ -39,7 +39,7 @@ const usersControllerFactory = (usersRepositoryFactory: UsersRepository) =>
     },
     async logout(req: Request, res: Response, next: NextFunction) {
       try {
-        const { username }: User = req.body;
+        const username = req.params.username;
         await usersRepositoryFactory.updateOne(username, { token: "" });
 
         res.sendStatus(204);
@@ -51,10 +51,11 @@ const usersControllerFactory = (usersRepositoryFactory: UsersRepository) =>
       try {
         const { refreshToken } = req.body;
 
-        const { token }: any = await usersRepositoryFactory.findByRefreshToken(
-          // TODO: handle any
-          refreshToken
-        );
+        const { username, token }: any =
+          await usersRepositoryFactory.findByRefreshToken(
+            // TODO: handle any
+            refreshToken
+          );
 
         if (refreshToken !== token) {
           throw new StatusError("Wrong refresh token.", 403);
@@ -62,7 +63,9 @@ const usersControllerFactory = (usersRepositoryFactory: UsersRepository) =>
 
         jwt.verify(refreshToken, JWT_REFRESH_SECRET);
 
-        res.cookie("accessToken", token);
+        const newAccessToken = generateAccessToken(username);
+
+        res.cookie("accessToken", newAccessToken);
         res.json(RESPONSE_OK);
       } catch (e) {
         next(e);
