@@ -21,13 +21,12 @@ const usersRouteFactory = (db: Db) => {
   const { USERS, USERS_ME, LOGIN, LOGOUT, TOKEN } = routes;
   const router: Router = Router();
   const usersRepository = usersRepositoryFactory(db);
-  const { createUser, getUsers, getMe, login, logout, token } =
+  const { createUser, getUsers, login, logout, token } =
     usersControllerFactory(usersRepository);
 
+  router.post(TOKEN, validateTokenMiddleWare, token);
   router.post(LOGIN, validateUserMiddleware, login);
   router.delete(LOGOUT, extractJWT, logout);
-  router.post(TOKEN, validateTokenMiddleWare, token);
-  router.get(USERS_ME, extractJWT, getMe);
   router.get(USERS, extractJWT, getUsers);
   router.post(USERS, validateUserMiddleware, createUser);
 

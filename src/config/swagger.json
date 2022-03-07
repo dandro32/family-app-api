@@ -8,6 +8,78 @@
   "basePath": "/api",
   "swagger": "2.0",
   "paths": {
+    "/login": {
+      "post": {
+        "operationId": "login",
+        "summary": "Login",
+        "description": "Login",
+        "produces": "application/json",
+        "parameters": [
+          {
+            "name": "Login JSON",
+            "in": "body",
+            "description": "Adds refresh and access token in cookies",
+            "schema": {
+              "$ref": "#/definitions/Credentials"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success response",
+            "schema": {
+              "$ref": "#/definitions/User"
+            }
+          }
+        }
+      }
+    },
+    "/token": {
+      "post": {
+        "operationId": "token",
+        "summary": "token",
+        "description": "add new access token",
+        "produces": "application/json",
+        "parameters": [
+          {
+            "name": "Token JSON",
+            "in": "body",
+            "description": "Adds new access token in cookies",
+            "schema": {
+              "$ref": "#/definitions/TokenCredentials"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success response",
+            "schema": {
+              "$ref": "#/definitions/StatusOk"
+            }
+          }
+        }
+      }
+    },
+    "/logout/{username}": {
+      "delete": {
+        "operationId": "logout",
+        "summary": "logout",
+        "description": "logout",
+        "produces": "application/json",
+        "parameters": [
+          {
+            "name": "username",
+            "description": "remove refresh token and logout user",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Success response"
+          }
+        }
+      }
+    },
     "/users": {
       "get": {
         "operationId": "getUsers",
@@ -17,13 +89,76 @@
         "responses": {
           "200": {
             "description": "Success response",
-            "examples": "{id: DANIEL, name: Daniel}"
+            "schema": {
+              "$ref": "#/definitions/Users"
+            }
+          }
+        }
+      },
+      "post": {
+        "operationId": "createUser",
+        "summary": "createUser",
+        "description": "createUser",
+        "produces": "application/json",
+        "parameters": [
+          {
+            "name": "create JSON",
+            "in": "body",
+            "description": "Adds refresh and access token in cookies, add user to database",
+            "schema": {
+              "$ref": "#/definitions/Credentials"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success response",
+            "schema": {
+              "$ref": "#/definitions/StatusOk"
+            }
           }
         }
       }
     }
   },
-  "definitions": {},
+  "definitions": {
+    "Credentials": {
+      "properties": {
+        "username": {
+          "type": "string",
+          "uniqueItems": true
+        },
+        "password": {
+          "type": "string",
+          "uniqueItems": true
+        }
+      }
+    },
+    "TokenCredentials": {
+      "properties": {
+        "refreshToken": {
+          "type": "string",
+          "uniqueItems": true
+        }
+      }
+    },
+    "StatusOk": {
+      "properties": {
+        "status": {}
+      }
+    },
+    "User": {
+      "properties": {
+        "username": {
+          "type": "string"
+        }
+      }
+    },
+    "Users": {
+      "type": "array",
+      "$ref": "#/definitions/User"
+    }
+  },
   "responses": {},
   "parameters": {},
   "securityDefinitions": {}
