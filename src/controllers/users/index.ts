@@ -49,8 +49,12 @@ const usersControllerFactory = (usersRepositoryFactory: UsersRepository) =>
     },
     async token(req: Request, res: Response, next: NextFunction) {
       try {
-        const { username, token: refreshToken }: User = req.body;
-        const { token }: any = await usersRepositoryFactory.findOne(username); // TODO: handle any
+        const { refreshToken } = req.body;
+
+        const { token }: any = await usersRepositoryFactory.findByRefreshToken(
+          // TODO: handle any
+          refreshToken
+        );
 
         if (refreshToken !== token) {
           throw new StatusError("Wrong refresh token.", 403);
@@ -60,15 +64,6 @@ const usersControllerFactory = (usersRepositoryFactory: UsersRepository) =>
 
         res.cookie("accessToken", token);
         res.json(RESPONSE_OK);
-      } catch (e) {
-        next(e);
-      }
-    },
-    async getMe(req: Request, res: Response, next: NextFunction) {
-      try {
-        const me = await usersRepositoryFactory.findOne(req.params.username);
-
-        res.json(me);
       } catch (e) {
         next(e);
       }
@@ -88,7 +83,7 @@ const usersControllerFactory = (usersRepositoryFactory: UsersRepository) =>
 
         res.cookie("accessToken", token);
         res.cookie("refreshToken", refreshToken);
-        res.json(RESPONSE_OK);
+        res.json({ username });
       } catch (e) {
         next(e);
       }
@@ -112,7 +107,7 @@ const usersControllerFactory = (usersRepositoryFactory: UsersRepository) =>
 
         res.cookie("accessToken", accessToken);
         res.cookie("refreshToken", refreshToken);
-        res.json(RESPONSE_OK);
+        res.json({ username });
       } catch (e) {
         next(e);
       }

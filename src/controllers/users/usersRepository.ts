@@ -8,6 +8,9 @@ const usersRepositoryFactory = (db: Db): UsersRepository => {
     async findOne(username) {
       return users.findOne({ username }, { projection: { _id: 0 } });
     },
+    async findByRefreshToken(token) {
+      return users.findOne({ token }, { projection: { _id: 0, password: 0 } });
+    },
     async findAll() {
       return users.find({}, { projection: { _id: 0, password: 0 } }).toArray();
     },

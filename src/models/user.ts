@@ -14,4 +14,5 @@ export interface UsersRepository {
   findOne(username: string): Promise<WithId<Document> | null>;
   create(credentials: User): Promise<void>;
   updateOne(username: string, updateValue: Partial<User>): Promise<void>;
+  findByRefreshToken(token: string): Promise<WithId<Document> | null>;
 }
