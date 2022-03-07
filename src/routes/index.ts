@@ -2,6 +2,8 @@ import { Router } from "express";
 import { Db } from "mongodb";
 import usersRepositoryFactory from "../controllers/users/usersRepository";
 import usersControllerFactory from "../controllers/users";
+import listsRepositoryFactory from "../controllers/lists/listRepository";
+import listsControllerFactory from "../controllers/lists";
 
 import routes from "./config";
 import { extractJWT } from "../middlewares";
@@ -17,8 +19,31 @@ const taskRouteFactory = (db: Db) => {
   return router;
 };
 
+const listRouteFactory = (db: Db) => {
+  const { LIST, LISTS, LIST_DONE } = routes;
+  const router: Router = Router();
+  const listsRepository = listsRepositoryFactory(db);
+  const {
+    getAllLists,
+    getList,
+    addList,
+    updateList,
+    deleteList,
+    markListAsDone,
+  } = listsControllerFactory(listsRepository);
+
+  router.get(LISTS, extractJWT, getAllLists);
+  router.get(LIST, extractJWT, getList);
+  router.post(LIST, extractJWT, addList);
+  router.put(LIST, extractJWT, updateList);
+  router.delete(LIST, extractJWT, deleteList);
+  router.get(LIST_DONE, extractJWT, markListAsDone);
+
+  return router;
+};
+
 const usersRouteFactory = (db: Db) => {
-  const { USERS, USERS_ME, LOGIN, LOGOUT, TOKEN } = routes;
+  const { USERS, LOGIN, LOGOUT, TOKEN } = routes;
   const router: Router = Router();
   const usersRepository = usersRepositoryFactory(db);
   const { createUser, getUsers, login, logout, token } =
@@ -33,4 +58,4 @@ const usersRouteFactory = (db: Db) => {
   return router;
 };
 
-export { taskRouteFactory, usersRouteFactory };
+export { listRouteFactory, taskRouteFactory, usersRouteFactory };

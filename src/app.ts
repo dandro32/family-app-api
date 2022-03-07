@@ -6,7 +6,7 @@ import swaggerDocument from "./config/swagger.json";
 
 import { errorLogger, logger } from "./logger";
 import { errorHandler, notFound } from "./errors";
-import { usersRouteFactory } from "./routes";
+import { listRouteFactory, usersRouteFactory } from "./routes";
 import { API_ROUTE } from "./config";
 
 const authPass: string = process.env.BASIC_AUTH as string;
@@ -14,6 +14,7 @@ const authPass: string = process.env.BASIC_AUTH as string;
 export const appFactory = (db: Db) => {
   const app = express();
   const usersRoutes = usersRouteFactory(db);
+  const listRoutes = listRouteFactory(db);
 
   app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
@@ -32,6 +33,7 @@ export const appFactory = (db: Db) => {
   });
 
   app.use(API_ROUTE, usersRoutes);
+  app.use(API_ROUTE, listRoutes);
 
   app.use(errorLogger);
 
