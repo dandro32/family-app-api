@@ -1,19 +1,21 @@
 import { DeleteResult, WithId, Document } from "mongodb";
 
-export interface Task  {
-  categoryId: string;
-  createDate: Date;
-  creator: string;
-  id: string;
-  name: string;
-  owner: string;
-  read: boolean;
+interface CreateTaskParams {
+  title: string;
+  username: string;
+  listId: string;
+}
+
+interface Task extends CreateTaskParams {
+  _id: string;
+  done: boolean;
 }
 
 export interface TaskRepository {
-  create(task: Task): Promise<void>;
-  findAll(categoryId: string): Promise<WithId<Document>[]>; // TODO: why document not task?
-  findOne(taskId: string): Promise<WithId<Document> | null>;
+  create(list: CreateTaskParams): Promise<void>;
+  findAll(listId: string): Promise<WithId<Document>[]>; // TODO: why document not task?
   remove(taskId: string): Promise<DeleteResult>;
-  update(task: Task): Promise<void>;
+  update(list: Task): Promise<void>;
 }
+
+export default Task;

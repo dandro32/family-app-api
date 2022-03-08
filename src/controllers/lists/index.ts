@@ -1,4 +1,3 @@
-import bcrypt from "bcrypt";
 import { NextFunction, Request, Response } from "express";
 
 import { StatusError } from "../../errors";

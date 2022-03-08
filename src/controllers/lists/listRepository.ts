@@ -1,7 +1,7 @@
 import { Db } from "mongodb";
 import { ListRepository } from "../../models/list";
 
-const taskRepositoryFactory = (db: Db): ListRepository => {
+const listRepositoryFactory = (db: Db): ListRepository => {
   const lists = db.collection("lists");
 
   return {
@@ -27,4 +27,4 @@ const taskRepositoryFactory = (db: Db): ListRepository => {
   };
 };
 
-export default taskRepositoryFactory;
+export default listRepositoryFactory;
