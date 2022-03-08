@@ -2,9 +2,9 @@ import { NextFunction, Request, Response } from "express";
 
 import { StatusError } from "../../errors";
 import { withErrorHandling } from "../../middlewares";
-import { ListRepository } from "../../models/list";
+import { TaskRepository } from "../../models/task";
 
-const listsControllerFactory = (listsRepositoryFactory: ListRepository) =>
+const tasksControllerFactory = (tasksRepositoryFactory: TaskRepository) =>
   withErrorHandling({
     async getAllTaskFromList(req: Request, res: Response, next: NextFunction) {
       try {
@@ -38,4 +38,4 @@ const listsControllerFactory = (listsRepositoryFactory: ListRepository) =>
     },
   });
 
-export default listsControllerFactory;
+export default tasksControllerFactory;
