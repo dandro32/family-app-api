@@ -24,6 +24,13 @@ const listRepositoryFactory = (db: Db): ListRepository => {
     async remove(listId) {
       return lists.deleteOne({ _id: listId });
     },
+    async markAsDone(listId) {
+      await lists.updateOne(
+        { _id: listId },
+        { $set: { done: true } },
+        { upsert: true }
+      );
+    },
   };
 };
 

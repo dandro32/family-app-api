@@ -1,4 +1,5 @@
 import { NextFunction, Request, Response } from "express";
+import { RESPONSE_OK } from "../../config";
 
 import { StatusError } from "../../errors";
 import { withErrorHandling } from "../../middlewares";
@@ -36,12 +37,20 @@ const listsControllerFactory = (listsRepositoryFactory: ListRepository) =>
     },
     async deleteList(req: Request, res: Response, next: NextFunction) {
       try {
+        const listId = req.params.listId;
+        const deleteStatus = await listsRepositoryFactory.remove(listId);
+
+        res.json(deleteStatus);
       } catch (e) {
         next(e);
       }
     },
-    async markListAsDone(_: Request, res: Response, next: NextFunction) {
+    async markListAsDone(req: Request, res: Response, next: NextFunction) {
       try {
+        const listId = req.params.listId;
+        await listsRepositoryFactory.markAsDone(listId);
+
+        res.json(RESPONSE_OK);
       } catch (e) {
         next(e);
       }

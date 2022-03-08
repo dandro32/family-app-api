@@ -16,6 +16,7 @@ export interface ListRepository {
   findOne(listId: string): Promise<WithId<Document> | null>;
   remove(listId: string): Promise<DeleteResult>;
   update(list: List): Promise<void>;
+  markAsDone(listId: string): Promise<void>;
 }
 
 export default List;
