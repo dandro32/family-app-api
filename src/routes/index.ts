@@ -70,7 +70,7 @@ const taskRouteFactory = (db: Db) => {
   router.post(TASKS, extractJWT, validateTaskMiddleware, addTask);
   router.put(TASK, extractJWT, validateTaskMiddleware, updateTask);
   router.delete(TASK, extractJWT, deleteTask);
-  router.get(TASK_DONE, extractJWT, markTaskAsDone);
+  router.patch(TASK_DONE, extractJWT, markTaskAsDone);
 
   return router;
 };

@@ -22,11 +22,7 @@ const tasksRepositoryFactory = (db: Db): TaskRepository => {
       return tasks.deleteOne({ _id: taskId });
     },
     async markAsDone(taskId) {
-      await tasks.updateOne(
-        { _id: taskId },
-        { $set: { done: 1 } },
-        { upsert: true }
-      );
+      await tasks.findOneAndUpdate({ _id: taskId }, { $set: { done: 1 } });
     },
   };
 };
