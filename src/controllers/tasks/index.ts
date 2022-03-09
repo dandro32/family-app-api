@@ -19,11 +19,14 @@ const tasksControllerFactory = (tasksRepositoryFactory: TaskRepository) =>
     },
     async addTask(req: Request, res: Response, next: NextFunction) {
       try {
-        const { listId, title, username }: CreateTaskParams = req.body;
+        const { title, username }: CreateTaskParams = req.body;
+        const listId = req.params.listId;
+
         await tasksRepositoryFactory.create({
           listId,
           title,
           username,
+          done: 0,
         });
 
         res.json(RESPONSE_OK);
@@ -34,7 +37,8 @@ const tasksControllerFactory = (tasksRepositoryFactory: TaskRepository) =>
     async updateTask(req: Request, res: Response, next: NextFunction) {
       try {
         const taskToUpdate: Task = req.body;
-        await tasksRepositoryFactory.update(taskToUpdate);
+        const taskId = req.params.taskId;
+        await tasksRepositoryFactory.update({ ...taskToUpdate, _id: taskId });
 
         res.json(RESPONSE_OK);
       } catch (e) {

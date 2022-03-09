@@ -11,6 +11,8 @@ import usersControllerFactory from "../controllers/users";
 import usersRepositoryFactory from "../controllers/users/usersRepository";
 import validateTokenMiddleWare from "../controllers/users/validateTokenMiddleWare";
 import validateUserMiddleware from "../controllers/users/validateUserMiddleware";
+import validateListMiddleware from "../controllers/lists/validateListMiddleware";
+import validateTaskMiddleware from "../controllers/tasks/validateTaskMiddleware";
 
 const listRouteFactory = (db: Db) => {
   const { LIST, LISTS, LIST_DONE } = routes;
@@ -27,8 +29,8 @@ const listRouteFactory = (db: Db) => {
 
   router.get(LISTS, extractJWT, getAllLists);
   router.get(LIST, extractJWT, getList);
-  router.post(LIST, extractJWT, addList);
-  router.put(LIST, extractJWT, updateList);
+  router.post(LIST, extractJWT, validateListMiddleware, addList);
+  router.put(LIST, extractJWT, validateListMiddleware, updateList);
   router.delete(LIST, extractJWT, deleteList);
   router.get(LIST_DONE, extractJWT, markListAsDone);
 
@@ -65,8 +67,8 @@ const taskRouteFactory = (db: Db) => {
   } = tasksControllerFactory(tasksRepository);
 
   router.get(TASKS, extractJWT, getAllTaskFromList);
-  router.post(TASKS, extractJWT, addTask);
-  router.put(TASK, extractJWT, updateTask);
+  router.post(TASKS, extractJWT, validateTaskMiddleware, addTask);
+  router.put(TASK, extractJWT, validateTaskMiddleware, updateTask);
   router.delete(TASK, extractJWT, deleteTask);
   router.get(TASK_DONE, extractJWT, markTaskAsDone);
 

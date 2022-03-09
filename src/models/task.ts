@@ -4,11 +4,11 @@ export interface CreateTaskParams {
   listId: string;
   title: string;
   username: string;
+  done: number;
 }
 
 export interface Task extends CreateTaskParams {
   _id: string;
-  done: boolean;
 }
 
 export interface TaskRepository {

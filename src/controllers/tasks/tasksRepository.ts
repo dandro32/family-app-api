@@ -24,7 +24,7 @@ const tasksRepositoryFactory = (db: Db): TaskRepository => {
     async markAsDone(taskId) {
       await tasks.updateOne(
         { _id: taskId },
-        { $set: { done: true } },
+        { $set: { done: 1 } },
         { upsert: true }
       );
     },
