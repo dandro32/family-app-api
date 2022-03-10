@@ -1,13 +1,13 @@
 import { DeleteResult, WithId, Document } from "mongodb";
 
-interface CreateListParams {
+export interface CreateListParams {
   title: string;
   tasks: string[];
+  done: number;
 }
 
-interface List extends CreateListParams {
+export interface List extends CreateListParams {
   _id: string;
-  done: boolean;
 }
 
 export interface ListRepository {

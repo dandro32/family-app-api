@@ -1,4 +1,4 @@
-import { Db } from "mongodb";
+import { Db, ObjectId } from "mongodb";
 import { TaskRepository } from "../../models/task";
 
 const tasksRepositoryFactory = (db: Db): TaskRepository => {
@@ -10,7 +10,7 @@ const tasksRepositoryFactory = (db: Db): TaskRepository => {
     },
     async update(task) {
       await tasks.updateOne(
-        { _id: task._id },
+        { _id: new ObjectId(task._id) },
         { $set: task },
         { upsert: true }
       );
@@ -19,10 +19,14 @@ const tasksRepositoryFactory = (db: Db): TaskRepository => {
       return tasks.find({ listId }).toArray();
     },
     async remove(taskId) {
-      return tasks.deleteOne({ _id: taskId });
+      return tasks.deleteOne({ _id: new ObjectId(taskId) });
     },
     async markAsDone(taskId) {
-      await tasks.findOneAndUpdate({ _id: taskId }, { $set: { done: 1 } });
+      await tasks.updateOne(
+        { _id: new ObjectId(taskId) },
+        { $set: { done: 1 } },
+        { upsert: true }
+      );
     },
   };
 };

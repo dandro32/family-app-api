@@ -1,7 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import { RESPONSE_OK } from "../../config";
 
-import { StatusError } from "../../errors";
 import { withErrorHandling } from "../../middlewares";
 import Task, { CreateTaskParams, TaskRepository } from "../../models/task";
 

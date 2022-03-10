@@ -1,9 +1,8 @@
 import { NextFunction, Request, Response } from "express";
 import { RESPONSE_OK } from "../../config";
 
-import { StatusError } from "../../errors";
 import { withErrorHandling } from "../../middlewares";
-import { ListRepository } from "../../models/list";
+import List, { CreateListParams, ListRepository } from "../../models/list";
 
 const listsControllerFactory = (listsRepositoryFactory: ListRepository) =>
   withErrorHandling({
@@ -25,12 +24,25 @@ const listsControllerFactory = (listsRepositoryFactory: ListRepository) =>
     },
     async addList(req: Request, res: Response, next: NextFunction) {
       try {
+        const { title, tasks }: CreateListParams = req.body;
+
+        await listsRepositoryFactory.create({
+          title,
+          tasks,
+          done: 0,
+        });
+
+        res.json(RESPONSE_OK);
       } catch (e) {
         next(e);
       }
     },
     async updateList(req: Request, res: Response, next: NextFunction) {
       try {
+        const listToUpdate: List = req.body;
+        const listId = req.params.listId;
+
+        await listsRepositoryFactory.update({ ...listToUpdate, _id: listId });
       } catch (e) {
         next(e);
       }

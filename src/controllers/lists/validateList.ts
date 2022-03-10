@@ -9,7 +9,7 @@ const ListSchema = Joi.object({
   tasks: Joi.array().required().min(1),
   title: Joi.string().required().min(3).max(100),
   _id: Joi.string().required(),
-  done: Joi.boolean(),
+  done: Joi.number().required().min(0).max(1),
 });
 
 const validateListCreation = (user: unknown, full: boolean = false) => {

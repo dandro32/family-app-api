@@ -1,5 +1,5 @@
 const routes: Record<string, string> = {
-  LIST_DONE: "/list/:listId",
+  LIST_DONE: "/list/:listId/done",
   LIST: "/list/:listId",
   LISTS: "/lists",
   LOGIN: "/login",
