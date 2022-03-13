@@ -1,4 +1,4 @@
-import { DeleteResult, WithId, Document } from "mongodb";
+import { DeleteResult, WithId, Document, ObjectId } from "mongodb";
 
 export interface CreateListParams {
   title: string;
@@ -12,7 +12,7 @@ export interface List extends CreateListParams {
 
 export interface ListRepository {
   create(list: CreateListParams): Promise<void>;
-  findAll(listId: string): Promise<WithId<Document>[]>; // TODO: why document not task?
+  getAllIds(): Promise<ObjectId[]>; // TODO: why document not task?
   findOne(listId: string): Promise<WithId<Document> | null>;
   remove(listId: string): Promise<DeleteResult>;
   update(list: List): Promise<void>;

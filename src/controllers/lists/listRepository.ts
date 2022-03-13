@@ -1,6 +1,13 @@
 import { Db, ObjectId } from "mongodb";
 import { ListRepository } from "../../models/list";
 
+const LOOKUP_CONFIG = {
+  from: "tasks",
+  localField: "tasks",
+  foreignField: "listId",
+  as: "tasks",
+};
+
 const listRepositoryFactory = (db: Db): ListRepository => {
   const lists = db.collection("lists");
 
@@ -21,20 +28,15 @@ const listRepositoryFactory = (db: Db): ListRepository => {
       if (list) {
         list.tasks = await lists.aggregate([
           {
-            $lookup: {
-              from: "tasks",
-              localField: "tasks",
-              foreignField: "listId",
-              as: "tasks",
-            },
+            $lookup: LOOKUP_CONFIG,
           },
         ]);
       }
 
       return list;
     },
-    async findAll() {
-      return lists.find().toArray();
+    async getAllIds() {
+      return lists.distinct("_id");
     },
     async remove(listId) {
       return lists.deleteOne({ _id: new ObjectId(listId) });

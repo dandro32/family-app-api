@@ -4,12 +4,12 @@ import { RESPONSE_OK } from "../../config";
 import { withErrorHandling } from "../../middlewares";
 import Task, { CreateTaskParams, TaskRepository } from "../../models/task";
 
-const tasksControllerFactory = (tasksRepositoryFactory: TaskRepository) =>
+const tasksControllerFactory = (tasksRepository: TaskRepository) =>
   withErrorHandling({
     async getAllTaskFromList(req: Request, res: Response, next: NextFunction) {
       try {
         const listId = req.params.listId;
-        const tasks = await tasksRepositoryFactory.findAll(listId);
+        const tasks = await tasksRepository.findAll(listId);
 
         res.json(tasks);
       } catch (e) {
@@ -21,7 +21,7 @@ const tasksControllerFactory = (tasksRepositoryFactory: TaskRepository) =>
         const { title, username }: CreateTaskParams = req.body;
         const listId = req.params.listId;
 
-        await tasksRepositoryFactory.create({
+        await tasksRepository.create({
           listId,
           title,
           username,
@@ -37,7 +37,7 @@ const tasksControllerFactory = (tasksRepositoryFactory: TaskRepository) =>
       try {
         const taskToUpdate: Task = req.body;
         const taskId = req.params.taskId;
-        await tasksRepositoryFactory.update({ ...taskToUpdate, _id: taskId });
+        await tasksRepository.update({ ...taskToUpdate, _id: taskId });
 
         res.json(RESPONSE_OK);
       } catch (e) {
@@ -47,7 +47,7 @@ const tasksControllerFactory = (tasksRepositoryFactory: TaskRepository) =>
     async deleteTask(req: Request, res: Response, next: NextFunction) {
       try {
         const taskId = req.params.taskId;
-        const deleteStatus = await tasksRepositoryFactory.remove(taskId);
+        const deleteStatus = await tasksRepository.remove(taskId);
 
         res.json(deleteStatus);
       } catch (e) {
@@ -57,7 +57,7 @@ const tasksControllerFactory = (tasksRepositoryFactory: TaskRepository) =>
     async markTaskAsDone(req: Request, res: Response, next: NextFunction) {
       try {
         const taskId = req.params.taskId;
-        await tasksRepositoryFactory.markAsDone(taskId);
+        await tasksRepository.markAsDone(taskId);
 
         res.json(RESPONSE_OK);
       } catch (e) {
