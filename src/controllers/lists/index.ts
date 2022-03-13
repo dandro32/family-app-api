@@ -3,15 +3,24 @@ import { RESPONSE_OK } from "../../config";
 
 import { withErrorHandling } from "../../middlewares";
 import List, { CreateListParams, ListRepository } from "../../models/list";
+import { TaskRepository } from "../../models/task";
 
-const listsControllerFactory = (listsRepository: ListRepository) =>
+const listsControllerFactory = (
+  listsRepository: ListRepository,
+  taskRepository: TaskRepository
+) =>
   withErrorHandling({
     async getAllLists(_: Request, res: Response, next: NextFunction) {
       try {
         const listsIds = await listsRepository.getAllIds();
         const listsWithTasks = await Promise.all(
           listsIds.map(async (objectId) => {
-            const list = await listsRepository.findOne(objectId.toString());
+            const listId = objectId.toString();
+            const list = await listsRepository.findOne(listId);
+
+            if (list) {
+              list.tasks = (await taskRepository.findAll(listId)) || [];
+            }
 
             return list;
           })
@@ -27,6 +36,10 @@ const listsControllerFactory = (listsRepository: ListRepository) =>
         const listId = req.params.listId;
         const list = await listsRepository.findOne(listId);
 
+        if (list) {
+          list.tasks = (await taskRepository.findAll(listId)) || [];
+        }
+
         res.json(list);
       } catch (e) {
         next(e);
@@ -34,11 +47,10 @@ const listsControllerFactory = (listsRepository: ListRepository) =>
     },
     async addList(req: Request, res: Response, next: NextFunction) {
       try {
-        const { title, tasks }: CreateListParams = req.body;
+        const { title }: CreateListParams = req.body;
 
         const { insertedId } = await listsRepository.create({
           title,
-          tasks,
           done: 0,
         });
 

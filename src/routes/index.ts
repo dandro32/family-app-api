@@ -18,6 +18,7 @@ const listRouteFactory = (db: Db) => {
   const { LIST, LISTS, LIST_DONE } = routes;
   const router: Router = Router();
   const listsRepository = listsRepositoryFactory(db);
+  const taskRepository = tasksRepositoryFactory(db);
   const {
     addList,
     deleteList,
@@ -25,14 +26,14 @@ const listRouteFactory = (db: Db) => {
     getList,
     markListAsDone,
     updateList,
-  } = listsControllerFactory(listsRepository);
+  } = listsControllerFactory(listsRepository, taskRepository);
 
   router.get(LISTS, extractJWT, getAllLists);
   router.post(LISTS, extractJWT, validateListMiddleware, addList);
   router.get(LIST, extractJWT, getList);
   router.put(LIST, extractJWT, validateListMiddleware, updateList);
   router.delete(LIST, extractJWT, deleteList);
-  router.get(LIST_DONE, extractJWT, markListAsDone);
+  router.patch(LIST_DONE, extractJWT, markListAsDone);
 
   return router;
 };

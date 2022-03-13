@@ -1,12 +1,10 @@
 import Joi from "joi";
 
 const ListCreationSchema = Joi.object({
-  tasks: Joi.array().required(),
   title: Joi.string().required().min(3).max(100),
 });
 
 const ListSchema = Joi.object({
-  tasks: Joi.array().required(),
   title: Joi.string().required().min(3).max(100),
   done: Joi.number().required().min(0).max(1),
 });

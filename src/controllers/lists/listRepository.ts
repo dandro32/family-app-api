@@ -2,7 +2,7 @@ import { Db, ObjectId } from "mongodb";
 import { ListRepository } from "../../models/list";
 
 const LOOKUP_CONFIG = {
-  from: "tasks",
+  from: "$tasks",
   localField: "_id",
   foreignField: "listId",
   as: "tasks",
