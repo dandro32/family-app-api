@@ -37,7 +37,8 @@ const tasksControllerFactory = (tasksRepository: TaskRepository) =>
       try {
         const taskToUpdate: Task = req.body;
         const taskId = req.params.taskId;
-        await tasksRepository.update({ ...taskToUpdate, _id: taskId });
+        await tasksRepository.update({ ...taskToUpdate });
+        await tasksRepository.remove(taskId);
 
         res.json(RESPONSE_OK);
       } catch (e) {
@@ -47,9 +48,9 @@ const tasksControllerFactory = (tasksRepository: TaskRepository) =>
     async deleteTask(req: Request, res: Response, next: NextFunction) {
       try {
         const taskId = req.params.taskId;
-        const deleteStatus = await tasksRepository.remove(taskId);
+        await tasksRepository.remove(taskId);
 
-        res.json(deleteStatus);
+        res.json(RESPONSE_OK);
       } catch (e) {
         next(e);
       }

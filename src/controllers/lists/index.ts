@@ -1,4 +1,4 @@
-import { NextFunction, Request, Response } from "express";
+import { NextFunction, Request, response, Response } from "express";
 import { RESPONSE_OK } from "../../config";
 
 import { withErrorHandling } from "../../middlewares";
@@ -6,7 +6,7 @@ import List, { CreateListParams, ListRepository } from "../../models/list";
 
 const listsControllerFactory = (listsRepository: ListRepository) =>
   withErrorHandling({
-    async getAllLists(req: Request, res: Response, next: NextFunction) {
+    async getAllLists(_: Request, res: Response, next: NextFunction) {
       try {
         const listsIds = await listsRepository.getAllIds();
         const listsWithTasks = await Promise.all(
@@ -36,13 +36,13 @@ const listsControllerFactory = (listsRepository: ListRepository) =>
       try {
         const { title, tasks }: CreateListParams = req.body;
 
-        await listsRepository.create({
+        const { insertedId } = await listsRepository.create({
           title,
           tasks,
           done: 0,
         });
 
-        res.json(RESPONSE_OK);
+        res.json(insertedId);
       } catch (e) {
         next(e);
       }
@@ -52,7 +52,10 @@ const listsControllerFactory = (listsRepository: ListRepository) =>
         const listToUpdate: List = req.body;
         const listId = req.params.listId;
 
-        await listsRepository.update({ ...listToUpdate, _id: listId });
+        await listsRepository.update(listToUpdate);
+        await listsRepository.remove(listId);
+
+        res.json(RESPONSE_OK);
       } catch (e) {
         next(e);
       }
@@ -60,9 +63,9 @@ const listsControllerFactory = (listsRepository: ListRepository) =>
     async deleteList(req: Request, res: Response, next: NextFunction) {
       try {
         const listId = req.params.listId;
-        const deleteStatus = await listsRepository.remove(listId);
+        await listsRepository.remove(listId);
 
-        res.json(deleteStatus);
+        res.json(RESPONSE_OK);
       } catch (e) {
         next(e);
       }

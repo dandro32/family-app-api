@@ -11,7 +11,7 @@ export interface List extends CreateListParams {
 }
 
 export interface ListRepository {
-  create(list: CreateListParams): Promise<void>;
+  create(list: CreateListParams): Promise<Document>;
   getAllIds(): Promise<ObjectId[]>; // TODO: why document not task?
   findOne(listId: string): Promise<WithId<Document> | null>;
   remove(listId: string): Promise<DeleteResult>;

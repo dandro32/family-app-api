@@ -28,8 +28,8 @@ const listRouteFactory = (db: Db) => {
   } = listsControllerFactory(listsRepository);
 
   router.get(LISTS, extractJWT, getAllLists);
+  router.post(LISTS, extractJWT, validateListMiddleware, addList);
   router.get(LIST, extractJWT, getList);
-  router.post(LIST, extractJWT, validateListMiddleware, addList);
   router.put(LIST, extractJWT, validateListMiddleware, updateList);
   router.delete(LIST, extractJWT, deleteList);
   router.get(LIST_DONE, extractJWT, markListAsDone);

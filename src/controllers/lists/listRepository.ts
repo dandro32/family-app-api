@@ -3,7 +3,7 @@ import { ListRepository } from "../../models/list";
 
 const LOOKUP_CONFIG = {
   from: "tasks",
-  localField: "tasks",
+  localField: "_id",
   foreignField: "listId",
   as: "tasks",
 };
@@ -13,7 +13,7 @@ const listRepositoryFactory = (db: Db): ListRepository => {
 
   return {
     async create(list) {
-      await lists.insertOne(list);
+      return await lists.insertOne(list);
     },
     async update(list) {
       await lists.updateOne(
