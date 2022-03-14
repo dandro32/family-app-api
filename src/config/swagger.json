@@ -8,6 +8,142 @@
   "basePath": "/api",
   "swagger": "2.0",
   "paths": {
+    "/lists": {
+      "get": {
+        "operationId": "getAllLists",
+        "summary": "Get all lists",
+        "description": "Get all list",
+        "produces": "application/json",
+        "responses": {
+          "200": {
+            "description": "Success response",
+            "schema": {
+              "$ref": "#/definitions/GetAllLists"
+            }
+          }
+        }
+      },
+      "post": {
+        "operationId": "list",
+        "summary": "Add List",
+        "description": "Add list",
+        "produces": "application/json",
+        "parameters": [
+          {
+            "name": "List JSON",
+            "in": "body",
+            "description": "Adds new list",
+            "schema": {
+              "$ref": "#/definitions/ListParams"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success response",
+            "schema": {
+              "$ref": "#/definitions/CreateListResponse"
+            }
+          }
+        }
+      }
+    },
+    "/list/{listId}": {
+      "get": {
+        "operationId": "getList",
+        "summary": "Get list",
+        "description": "Get list",
+        "produces": "application/json",
+        "parameters": [
+          {
+            "name": "listId",
+            "in": "query",
+            "description": "List Id"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success response",
+            "schema": {
+              "$ref": "#/definitions/ListEntity"
+            }
+          }
+        }
+      },
+      "put": {
+        "operationId": "updateList",
+        "summary": "Update list",
+        "description": "Update list",
+        "produces": "application/json",
+        "parameters": [
+          {
+            "name": "listId",
+            "in": "query",
+            "description": "List Id"
+          },
+          {
+            "name": "List JSON",
+            "in": "body",
+            "description": "Update list body",
+            "schema": {
+              "$ref": "#/definitions/ListParams"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success response",
+            "schema": {
+              "$ref": "#/definitions/StatusOk"
+            }
+          }
+        }
+      },
+      "delete": {
+        "operationId": "deleteList",
+        "summary": "Delete list",
+        "description": "Delete list",
+        "produces": "application/json",
+        "parameters": [
+          {
+            "name": "listId",
+            "in": "query",
+            "description": "List Id"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success response",
+            "schema": {
+              "$ref": "#/definitions/StatusOk"
+            }
+          }
+        }
+      }
+    },
+    "/list/{listId}/done": {
+      "patch": {
+        "operationId": "markListAsDone",
+        "summary": "Mark list as done",
+        "description": "Mark list as done",
+        "produces": "application/json",
+        "parameters": [
+          {
+            "name": "listId",
+            "in": "query",
+            "description": "List Id"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success response",
+            "schema": {
+              "$ref": "#/definitions/StatusOk"
+            }
+          }
+        }
+      }
+    },
     "/login": {
       "post": {
         "operationId": "login",
@@ -122,6 +258,58 @@
     }
   },
   "definitions": {
+    "ListParams": {
+      "properties": {
+        "title": {
+          "type": "string"
+        }
+      }
+    },
+    "CreateListResponse": {
+      "properties": {
+        "insertedId": {
+          "type": "string",
+          "uniqueItems": true
+        }
+      }
+    },
+    "TaskEntity": {
+      "properties": {
+        "_id": {
+          "type": "string",
+          "uniqueItems": true
+        },
+        "listId": {
+          "type": "string",
+          "uniqueItems": true
+        },
+        "username": {
+          "type": "string",
+          "uniqueItems": true
+        },
+        "done": {
+          "type": "number"
+        }
+      }
+    },
+    "ListEntity": {
+      "properties": {
+        "_id": {
+          "type": "string",
+          "uniqueItems": true
+        },
+        "title": {
+          "type": "string"
+        },
+        "done": {
+          "type": "number"
+        },
+        "tasks": {
+          "type": "array",
+          "$ref": "#/definitions/TaskEntity"
+        }
+      }
+    },
     "Credentials": {
       "properties": {
         "username": {
@@ -157,6 +345,10 @@
     "Users": {
       "type": "array",
       "$ref": "#/definitions/User"
+    },
+    "GetAllLists": {
+      "type": "array",
+      "$ref": "#/definitions/ListEntity"
     }
   },
   "responses": {},
