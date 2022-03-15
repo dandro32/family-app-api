@@ -1,24 +1,45 @@
 import { Router } from "express";
 import { Db } from "mongodb";
-import usersRepositoryFactory from "../controllers/users/usersRepository";
-import usersControllerFactory from "../controllers/users";
 
 import routes from "./config";
 import { extractJWT } from "../middlewares";
-import validateUserMiddleware from "../controllers/users/validateUserMiddleware";
+import listsControllerFactory from "../controllers/lists";
+import listsRepositoryFactory from "../controllers/lists/listRepository";
+import tasksControllerFactory from "../controllers/tasks";
+import tasksRepositoryFactory from "../controllers/tasks/tasksRepository";
+import usersControllerFactory from "../controllers/users";
+import usersRepositoryFactory from "../controllers/users/usersRepository";
 import validateTokenMiddleWare from "../controllers/users/validateTokenMiddleWare";
+import validateUserMiddleware from "../controllers/users/validateUserMiddleware";
+import validateListMiddleware from "../controllers/lists/validateListMiddleware";
+import validateTaskMiddleware from "../controllers/tasks/validateTaskMiddleware";
 
-const taskRouteFactory = (db: Db) => {
-  const { TASKS, TASK, TASK_DONE } = routes;
+const listRouteFactory = (db: Db) => {
+  const { LIST, LISTS, LIST_DONE } = routes;
   const router: Router = Router();
+  const listsRepository = listsRepositoryFactory(db);
+  const taskRepository = tasksRepositoryFactory(db);
+  const {
+    addList,
+    deleteList,
+    getAllLists,
+    getList,
+    markListAsDone,
+    updateList,
+  } = listsControllerFactory(listsRepository, taskRepository);
 
-  // TODO: Add repository and services
+  router.get(LISTS, extractJWT, getAllLists);
+  router.post(LISTS, extractJWT, validateListMiddleware, addList);
+  router.get(LIST, extractJWT, getList);
+  router.put(LIST, extractJWT, validateListMiddleware, updateList);
+  router.delete(LIST, extractJWT, deleteList);
+  router.patch(LIST_DONE, extractJWT, markListAsDone);
 
   return router;
 };
 
 const usersRouteFactory = (db: Db) => {
-  const { USERS, USERS_ME, LOGIN, LOGOUT, TOKEN } = routes;
+  const { USERS, LOGIN, LOGOUT, TOKEN } = routes;
   const router: Router = Router();
   const usersRepository = usersRepositoryFactory(db);
   const { createUser, getUsers, login, logout, token } =
@@ -33,4 +54,26 @@ const usersRouteFactory = (db: Db) => {
   return router;
 };
 
-export { taskRouteFactory, usersRouteFactory };
+const taskRouteFactory = (db: Db) => {
+  const { TASKS, TASK, TASK_DONE } = routes;
+  const router: Router = Router();
+  const tasksRepository = tasksRepositoryFactory(db);
+
+  const {
+    getAllTaskFromList,
+    addTask,
+    updateTask,
+    deleteTask,
+    markTaskAsDone,
+  } = tasksControllerFactory(tasksRepository);
+
+  router.get(TASKS, extractJWT, getAllTaskFromList);
+  router.post(TASKS, extractJWT, validateTaskMiddleware, addTask);
+  router.put(TASK, extractJWT, validateTaskMiddleware, updateTask);
+  router.delete(TASK, extractJWT, deleteTask);
+  router.patch(TASK_DONE, extractJWT, markTaskAsDone);
+
+  return router;
+};
+
+export { listRouteFactory, taskRouteFactory, usersRouteFactory };

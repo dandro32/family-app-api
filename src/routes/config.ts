@@ -1,9 +1,12 @@
 const routes: Record<string, string> = {
+  LIST_DONE: "/list/:listId/done",
+  LIST: "/list/:listId",
+  LISTS: "/lists",
   LOGIN: "/login",
   LOGOUT: "/logout/:username",
-  TASKS: "/tasks/:categoryId",
-  TASK: "/tasks/:taskId",
-  TASK_DONE: "/tasks/:taskId/done",
+  TASK_DONE: "/task/:taskId/done",
+  TASK: "/task/:taskId",
+  TASKS: "/tasks/:listId",
   TOKEN: "/token",
   USERS: "/users",
 };

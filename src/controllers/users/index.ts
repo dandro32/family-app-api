@@ -26,11 +26,11 @@ const generateRefreshToken = (username: string): string => {
   });
 };
 
-const usersControllerFactory = (usersRepositoryFactory: UsersRepository) =>
+const usersControllerFactory = (usersRepository: UsersRepository) =>
   withErrorHandling({
     async getUsers(_: Request, res: Response, next: NextFunction) {
       try {
-        const users = await usersRepositoryFactory.findAll();
+        const users = await usersRepository.findAll();
 
         res.json(users);
       } catch (e) {
@@ -40,7 +40,7 @@ const usersControllerFactory = (usersRepositoryFactory: UsersRepository) =>
     async logout(req: Request, res: Response, next: NextFunction) {
       try {
         const username = req.params.username;
-        await usersRepositoryFactory.updateOne(username, { token: "" });
+        await usersRepository.updateOne(username, { token: "" });
 
         res.sendStatus(204);
       } catch (e) {
@@ -52,7 +52,7 @@ const usersControllerFactory = (usersRepositoryFactory: UsersRepository) =>
         const { refreshToken } = req.body;
 
         const { username, token }: any =
-          await usersRepositoryFactory.findByRefreshToken(
+          await usersRepository.findByRefreshToken(
             // TODO: handle any
             refreshToken
           );
@@ -77,7 +77,7 @@ const usersControllerFactory = (usersRepositoryFactory: UsersRepository) =>
         const hashedPassword = await bcrypt.hash(password, 10);
         const refreshToken = generateRefreshToken(username);
 
-        await usersRepositoryFactory.create({
+        await usersRepository.create({
           username,
           password: hashedPassword,
           token: refreshToken,
@@ -94,7 +94,7 @@ const usersControllerFactory = (usersRepositoryFactory: UsersRepository) =>
     async login(req: Request, res: Response, next: NextFunction) {
       try {
         const { username, password } = req.body;
-        const user = await usersRepositoryFactory.findOne(username);
+        const user = await usersRepository.findOne(username);
 
         if (!user) {
           throw new StatusError("User does not exists. Please register", 403);
