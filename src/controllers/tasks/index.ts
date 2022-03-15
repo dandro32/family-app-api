@@ -21,14 +21,14 @@ const tasksControllerFactory = (tasksRepository: TaskRepository) =>
         const { title, username }: CreateTaskParams = req.body;
         const listId = req.params.listId;
 
-        await tasksRepository.create({
+        const { insertedId } = await tasksRepository.create({
           listId,
           title,
           username,
           done: 0,
         });
 
-        res.json(RESPONSE_OK);
+        res.json(insertedId);
       } catch (e) {
         next(e);
       }

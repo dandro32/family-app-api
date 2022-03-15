@@ -6,7 +6,7 @@ const tasksRepositoryFactory = (db: Db): TaskRepository => {
 
   return {
     async create(task) {
-      await tasks.insertOne(task);
+      return await tasks.insertOne(task);
     },
     async update(task) {
       await tasks.updateOne(

@@ -8,12 +8,147 @@
   "basePath": "/api",
   "swagger": "2.0",
   "paths": {
+    "/tasks/{listId}": {
+      "get": {
+        "operationId": "getAllTasks",
+        "summary": "Get all tasks",
+        "description": "Get all tasks",
+        "produces": "application/json",
+        "tags": ["tasks"],
+        "parameters": [
+          {
+            "name": "listId",
+            "in": "query",
+            "description": "List Id"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success response",
+            "schema": {
+              "$ref": "#/definitions/GetAllTasks"
+            }
+          }
+        }
+      },
+      "post": {
+        "operationId": "addTask",
+        "summary": "add task",
+        "description": "add task",
+        "produces": "application/json",
+        "tags": ["tasks"],
+        "parameters": [
+          {
+            "name": "listId",
+            "in": "query",
+            "description": "List Id"
+          },
+          {
+            "name": "Task JSON",
+            "in": "body",
+            "description": "Update list body",
+            "schema": {
+              "$ref": "#/definitions/TaskParams"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success response",
+            "schema": {
+              "$ref": "#/definitions/GetAllTasks"
+            }
+          }
+        }
+      }
+    },
+
+    "/task/{taskId}": {
+      "put": {
+        "operationId": "updateTask",
+        "summary": "Update Task",
+        "description": "Update Task",
+        "tags": ["tasks"],
+        "produces": "application/json",
+        "parameters": [
+          {
+            "name": "taskId",
+            "in": "query",
+            "description": "Task Id"
+          },
+          {
+            "name": "Task JSON",
+            "in": "body",
+            "description": "Update task body",
+            "schema": {
+              "$ref": "#/definitions/TaskParams"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success response",
+            "schema": {
+              "$ref": "#/definitions/StatusOk"
+            }
+          }
+        }
+      },
+      "delete": {
+        "operationId": "deleteTask",
+        "summary": "Delete Task",
+        "tags": ["tasks"],
+        "description": "Delete Task",
+        "produces": "application/json",
+        "parameters": [
+          {
+            "name": "taskId",
+            "in": "query",
+            "description": "Task Id"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success response",
+            "schema": {
+              "$ref": "#/definitions/StatusOk"
+            }
+          }
+        }
+      }
+    },
+    "/task/{taskId}/done": {
+      "patch": {
+        "operationId": "markTaskAsDone",
+        "tags": ["tasks"],
+        "summary": "Mark Task as done",
+        "description": "Mark Task as done",
+        "produces": "application/json",
+        "parameters": [
+          {
+            "name": "taskId",
+            "in": "query",
+            "description": "Task Id"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success response",
+            "schema": {
+              "$ref": "#/definitions/StatusOk"
+            }
+          }
+        }
+      }
+    },
+
     "/lists": {
       "get": {
         "operationId": "getAllLists",
         "summary": "Get all lists",
         "description": "Get all list",
         "produces": "application/json",
+        "tags": ["lists"],
         "responses": {
           "200": {
             "description": "Success response",
@@ -28,6 +163,7 @@
         "summary": "Add List",
         "description": "Add list",
         "produces": "application/json",
+        "tags": ["lists"],
         "parameters": [
           {
             "name": "List JSON",
@@ -53,6 +189,7 @@
         "operationId": "getList",
         "summary": "Get list",
         "description": "Get list",
+        "tags": ["lists"],
         "produces": "application/json",
         "parameters": [
           {
@@ -74,6 +211,7 @@
         "operationId": "updateList",
         "summary": "Update list",
         "description": "Update list",
+        "tags": ["lists"],
         "produces": "application/json",
         "parameters": [
           {
@@ -102,6 +240,7 @@
       "delete": {
         "operationId": "deleteList",
         "summary": "Delete list",
+        "tags": ["lists"],
         "description": "Delete list",
         "produces": "application/json",
         "parameters": [
@@ -124,6 +263,7 @@
     "/list/{listId}/done": {
       "patch": {
         "operationId": "markListAsDone",
+        "tags": ["lists"],
         "summary": "Mark list as done",
         "description": "Mark list as done",
         "produces": "application/json",
@@ -147,6 +287,7 @@
     "/login": {
       "post": {
         "operationId": "login",
+        "tags": ["users/auth"],
         "summary": "Login",
         "description": "Login",
         "produces": "application/json",
@@ -174,6 +315,7 @@
       "post": {
         "operationId": "token",
         "summary": "token",
+        "tags": ["users/auth"],
         "description": "add new access token",
         "produces": "application/json",
         "parameters": [
@@ -200,6 +342,7 @@
       "delete": {
         "operationId": "logout",
         "summary": "logout",
+        "tags": ["users/auth"],
         "description": "logout",
         "produces": "application/json",
         "parameters": [
@@ -220,6 +363,7 @@
       "get": {
         "operationId": "getUsers",
         "summary": "get list of users",
+        "tags": ["users/auth"],
         "description": "Get list of users",
         "produces": "application/json",
         "responses": {
@@ -235,6 +379,7 @@
         "operationId": "createUser",
         "summary": "createUser",
         "description": "createUser",
+        "tags": ["users/auth"],
         "produces": "application/json",
         "parameters": [
           {
@@ -265,6 +410,17 @@
         }
       }
     },
+    "TaskParams": {
+      "properties": {
+        "title": {
+          "type": "string"
+        },
+        "username": {
+          "type": "string",
+          "uniqueItems": true
+        }
+      }
+    },
     "CreateListResponse": {
       "properties": {
         "insertedId": {
@@ -280,6 +436,10 @@
           "uniqueItems": true
         },
         "listId": {
+          "type": "string",
+          "uniqueItems": true
+        },
+        "title": {
           "type": "string",
           "uniqueItems": true
         },
@@ -349,6 +509,10 @@
     "GetAllLists": {
       "type": "array",
       "$ref": "#/definitions/ListEntity"
+    },
+    "GetAllTasks": {
+      "type": "array",
+      "$ref": "#/definitions/TaskEntity"
     }
   },
   "responses": {},

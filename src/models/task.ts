@@ -12,7 +12,7 @@ export interface Task extends CreateTaskParams {
 }
 
 export interface TaskRepository {
-  create(list: CreateTaskParams): Promise<void>;
+  create(list: CreateTaskParams): Promise<Document>;
   findAll(listId: string): Promise<WithId<Document>[]>; // TODO: why document not task?
   markAsDone(taskId: string): Promise<void>;
   remove(taskId: string): Promise<DeleteResult>;
