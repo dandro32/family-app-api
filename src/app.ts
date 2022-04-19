@@ -1,5 +1,5 @@
 import express from "express";
-import basicAuth from "express-basic-auth";
+import cors from "cors";
 import { Db } from "mongodb";
 import swaggerUi from "swagger-ui-express";
 import swaggerDocument from "./config/swagger.json";
@@ -36,6 +36,8 @@ export const appFactory = (db: Db) => {
   app.get("/", function (req, res, next) {
     res.send("Family-app is working");
   });
+
+  app.use(cors());
 
   app.use(API_ROUTE, usersRoutes);
   app.use(API_ROUTE, listRoutes);
