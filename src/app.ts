@@ -21,7 +21,7 @@ export const appFactory = (db: Db) => {
   const listRoutes = listRouteFactory(db);
   const taskRoutes = taskRouteFactory(db);
 
-  app.use(cors());
+  app.use(cors({ credentials: true, origin: "http://localhost:3000" }));
   app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
   // app.use(  // TODO
