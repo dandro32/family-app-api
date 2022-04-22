@@ -12,9 +12,9 @@ export const notFound: RequestHandler = (req, res, next) => {
 };
 
 export const errorHandler: ErrorRequestHandler = (err, req, res, next) => {
-  console.log("-------------------");
+  console.log("--------------------");
   console.log(err);
-  console.log("-------------------");
+  console.log("--------------------");
   res.status(err.status || 500);
   res.json({
     message: err.error,
