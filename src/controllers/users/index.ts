@@ -84,8 +84,11 @@ const usersControllerFactory = (usersRepository: UsersRepository) =>
         });
         const token = generateAccessToken(req.body);
 
-        res.cookie("accessToken", token, {path: '/register'});
-        res.cookie("refreshToken", refreshToken,  {path: '/register'} );
+        res.cookie("accessToken", token, { path: "/register", httpOnly: true });
+        res.cookie("refreshToken", refreshToken, {
+          path: "/register",
+          httpOnly: true,
+        });
         res.json({ username });
       } catch (e) {
         next(e);
@@ -108,8 +111,14 @@ const usersControllerFactory = (usersRepository: UsersRepository) =>
         const accessToken = generateAccessToken(username);
         const refreshToken = generateRefreshToken(username);
 
-        res.cookie("accessToken", accessToken,  {path: '/login'});
-        res.cookie("refreshToken", refreshToken,  {path: '/login'});
+        res.cookie("accessToken", accessToken, {
+          path: "/login",
+          httpOnly: true,
+        });
+        res.cookie("refreshToken", refreshToken, {
+          path: "/login",
+          httpOnly: true,
+        });
         res.json({ username });
       } catch (e) {
         next(e);
