@@ -84,9 +84,8 @@ const usersControllerFactory = (usersRepository: UsersRepository) =>
         });
         const token = generateAccessToken(req.body);
 
-        res.cookie("accessToken", token, { path: "/register", httpOnly: true });
+        res.cookie("accessToken", token, { httpOnly: true });
         res.cookie("refreshToken", refreshToken, {
-          path: "/register",
           httpOnly: true,
         });
         res.json({ username });
@@ -112,11 +111,9 @@ const usersControllerFactory = (usersRepository: UsersRepository) =>
         const refreshToken = generateRefreshToken(username);
 
         res.cookie("accessToken", accessToken, {
-          path: "/login",
           httpOnly: true,
         });
         res.cookie("refreshToken", refreshToken, {
-          path: "/login",
           httpOnly: true,
         });
         res.json({ username });
