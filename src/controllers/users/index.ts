@@ -117,12 +117,12 @@ const usersControllerFactory = (usersRepository: UsersRepository) =>
         );
 
         res.cookie("accessToken", accessToken, {
-          httpOnly: true,
-          sameSite: true,
+          // httpOnly: true,
+          // sameSite: true,
         });
         res.cookie("refreshToken", refreshToken, {
-          httpOnly: true,
-          sameSite: true,
+          // httpOnly: true,
+          // sameSite: true,
         });
         res.json({ username });
       } catch (e) {
