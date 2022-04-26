@@ -6,7 +6,6 @@ import {
   JWT_ACCESS_SECRET,
   JWT_ACCESS_TOKEN_EXPIRATION,
   JWT_REFRESH_SECRET,
-  RESPONSE_OK,
 } from "../../config";
 import { StatusError } from "../../errors";
 import { withErrorHandling } from "../../middlewares";
@@ -63,10 +62,9 @@ const usersControllerFactory = (usersRepository: UsersRepository) =>
 
         jwt.verify(refreshToken, JWT_REFRESH_SECRET);
 
-        const newAccessToken = generateAccessToken(username);
+        const accessToken = generateAccessToken(username);
 
-        res.cookie("accessToken", newAccessToken);
-        res.json(RESPONSE_OK);
+        res.json({ accessToken });
       } catch (e) {
         next(e);
       }
@@ -82,13 +80,9 @@ const usersControllerFactory = (usersRepository: UsersRepository) =>
           password: hashedPassword,
           token: refreshToken,
         });
-        const token = generateAccessToken(req.body);
+        const accessToken = generateAccessToken(req.body);
 
-        res.cookie("accessToken", token, { httpOnly: true });
-        res.cookie("refreshToken", refreshToken, {
-          httpOnly: true,
-        });
-        res.json({ username });
+        res.json({ username, accessToken, refreshToken });
       } catch (e) {
         next(e);
       }
@@ -110,21 +104,7 @@ const usersControllerFactory = (usersRepository: UsersRepository) =>
         const accessToken = generateAccessToken(username);
         const refreshToken = generateRefreshToken(username);
 
-        res.header("Access-Control-Allow-Credentials", "true");
-        res.header(
-          "Access-Control-Allow-Headers",
-          "Origin, X-Requested-With, Content-Type, Accept"
-        );
-
-        res.cookie("accessToken", accessToken, {
-          httpOnly: false,
-          sameSite: "lax",
-        });
-        res.cookie("refreshToken", refreshToken, {
-          httpOnly: false,
-          sameSite: "lax",
-        });
-        res.json({ username });
+        res.json({ username, accessToken, refreshToken });
       } catch (e) {
         next(e);
       }
