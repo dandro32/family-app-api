@@ -305,7 +305,7 @@
           "200": {
             "description": "Success response",
             "schema": {
-              "$ref": "#/definitions/User"
+              "$ref": "#/definitions/UserWithTokens"
             }
           }
         }
@@ -332,7 +332,7 @@
           "200": {
             "description": "Success response",
             "schema": {
-              "$ref": "#/definitions/StatusOk"
+              "$ref": "#/definitions/TokenResponse"
             }
           }
         }
@@ -395,7 +395,7 @@
           "200": {
             "description": "Success response",
             "schema": {
-              "$ref": "#/definitions/StatusOk"
+              "$ref": "#/definitions/UserWithTokens"
             }
           }
         }
@@ -498,6 +498,26 @@
     "User": {
       "properties": {
         "username": {
+          "type": "string"
+        }
+      }
+    },
+    "TokenResponse": {
+      "properties": {
+        "accessToken": {
+          "type": "string"
+        }
+      }
+    },
+    "UserWithTokens": {
+      "properties": {
+        "username": {
+          "type": "string"
+        },
+        "accessToken": {
+          "type": "string"
+        },
+        "refreshToken": {
           "type": "string"
         }
       }
