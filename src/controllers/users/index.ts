@@ -10,7 +10,7 @@ import {
 import { StatusError } from "../../errors";
 import { withErrorHandling } from "../../middlewares";
 
-import { CreateUser, UsersRepository } from "../../models/user";
+import { CreateUser, User, UsersRepository } from "../../models/user";
 
 const generateAccessToken = (username: string): string => {
   return jwt.sign({ username }, JWT_ACCESS_SECRET, {
@@ -50,19 +50,22 @@ const usersControllerFactory = (usersRepository: UsersRepository) =>
       try {
         const { refreshToken } = req.body;
 
-        const { username, token }: any =
-          await usersRepository.findByRefreshToken(
-            // TODO: handle any
-            refreshToken
-          );
+        const user: any = await usersRepository.findByRefreshToken(
+          // TODO: handle any
+          refreshToken
+        );
 
-        if (refreshToken !== token) {
+        if (!user) {
+          throw new StatusError("User does not exists", 403);
+        }
+
+        if (refreshToken !== user.token) {
           throw new StatusError("Wrong refresh token.", 403);
         }
 
         jwt.verify(refreshToken, JWT_REFRESH_SECRET);
 
-        const accessToken = generateAccessToken(username);
+        const accessToken = generateAccessToken(user.username);
 
         res.json({ accessToken });
       } catch (e) {
