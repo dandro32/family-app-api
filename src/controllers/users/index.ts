@@ -72,6 +72,13 @@ const usersControllerFactory = (usersRepository: UsersRepository) =>
     async createUser(req: Request, res: Response, next: NextFunction) {
       try {
         const { username, password }: CreateUser = req.body;
+
+        const userExists = await usersRepository.findOne(username);
+
+        if (userExists) {
+          throw new StatusError(`User: ${username} already exists`, 400);
+        }
+
         const hashedPassword = await bcrypt.hash(password, 10);
         const refreshToken = generateRefreshToken(username);
 
