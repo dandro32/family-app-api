@@ -18,7 +18,7 @@
         "parameters": [
           {
             "name": "listId",
-            "in": "query",
+            "in": "path",
             "description": "List Id"
           }
         ],
@@ -40,7 +40,7 @@
         "parameters": [
           {
             "name": "listId",
-            "in": "query",
+            "in": "path",
             "description": "List Id"
           },
           {
@@ -73,7 +73,7 @@
         "parameters": [
           {
             "name": "taskId",
-            "in": "query",
+            "in": "path",
             "description": "Task Id"
           },
           {
@@ -103,7 +103,7 @@
         "parameters": [
           {
             "name": "taskId",
-            "in": "query",
+            "in": "path",
             "description": "Task Id"
           }
         ],
@@ -127,8 +127,16 @@
         "parameters": [
           {
             "name": "taskId",
-            "in": "query",
+            "in": "path",
             "description": "Task Id"
+          },
+          {
+            "name": "Mark Task as Done JSON",
+            "in": "body",
+            "description": "Change done status: 0 or 1",
+            "schema": {
+              "$ref": "#/definitions/MarkTaskAsDoneSchema"
+            }
           }
         ],
         "responses": {
@@ -194,7 +202,7 @@
         "parameters": [
           {
             "name": "listId",
-            "in": "query",
+            "in": "path",
             "description": "List Id"
           }
         ],
@@ -216,7 +224,7 @@
         "parameters": [
           {
             "name": "listId",
-            "in": "query",
+            "in": "path",
             "description": "List Id"
           },
           {
@@ -246,7 +254,7 @@
         "parameters": [
           {
             "name": "listId",
-            "in": "query",
+            "in": "path",
             "description": "List Id"
           }
         ],
@@ -270,7 +278,7 @@
         "parameters": [
           {
             "name": "listId",
-            "in": "query",
+            "in": "path",
             "description": "List Id"
           }
         ],
@@ -499,6 +507,13 @@
       "properties": {
         "username": {
           "type": "string"
+        }
+      }
+    },
+    "MarkTaskAsDoneSchema": {
+      "properties": {
+        "status": {
+          "type": "number"
         }
       }
     },
