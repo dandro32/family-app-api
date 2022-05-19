@@ -247,7 +247,7 @@
       },
       "delete": {
         "operationId": "deleteList",
-        "summary": "Delete list",
+        "summary": "Delete list with all tasks with the list",
         "tags": ["lists"],
         "description": "Delete list",
         "produces": "application/json",
