@@ -21,6 +21,9 @@ const tasksRepositoryFactory = (db: Db): TaskRepository => {
     async remove(taskId) {
       return tasks.deleteOne({ _id: new ObjectId(taskId) });
     },
+    async removeAll(listId) {
+      return tasks.deleteMany({ listId });
+    },
     async markAsDone(taskId, status) {
       await tasks.updateOne(
         { _id: new ObjectId(taskId) },

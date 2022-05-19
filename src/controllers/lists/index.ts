@@ -76,6 +76,7 @@ const listsControllerFactory = (
       try {
         const listId = req.params.listId;
         await listsRepository.remove(listId);
+        await taskRepository.removeAll(listId);
 
         res.json(RESPONSE_OK);
       } catch (e) {

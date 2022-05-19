@@ -22,6 +22,7 @@ export interface TaskRepository {
   findAll(listId: string): Promise<WithId<Document>[]>; // TODO: why document not task?
   markAsDone(taskId: string, status: DoneStatus): Promise<void>;
   remove(taskId: string): Promise<DeleteResult>;
+  removeAll(listId: string): Promise<DeleteResult>;
   update(list: Task): Promise<void>;
 }
 
