@@ -13,6 +13,8 @@ import validateTokenMiddleWare from "../controllers/users/validateTokenMiddleWar
 import validateUserMiddleware from "../controllers/users/validateUserMiddleware";
 import validateListMiddleware from "../controllers/lists/validateListMiddleware";
 import validateTaskMiddleware from "../controllers/tasks/validateTaskMiddleware";
+import chatRepositoryFactory from "../controllers/chat/chatRepository";
+import chatControllerFactory from "../controllers/chat";
 
 const listRouteFactory = (db: Db) => {
   const { LIST, LISTS, LIST_DONE } = routes;
@@ -76,4 +78,21 @@ const taskRouteFactory = (db: Db) => {
   return router;
 };
 
-export { listRouteFactory, taskRouteFactory, usersRouteFactory };
+const chatRouteFactory = (db: Db) => {
+  const { CHAT } = routes;
+  const router: Router = Router();
+  const chatRepository = chatRepositoryFactory(db);
+  const { addMessage, getAll } = chatControllerFactory(chatRepository);
+
+  router.get(CHAT, extractJWT, getAll);
+  router.post(CHAT, extractJWT, addMessage);
+
+  return router;
+};
+
+export {
+  chatRouteFactory,
+  listRouteFactory,
+  taskRouteFactory,
+  usersRouteFactory,
+};
