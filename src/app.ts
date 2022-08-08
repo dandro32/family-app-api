@@ -7,19 +7,19 @@ import swaggerDocument from "./config/swagger.json";
 import { errorLogger, logger } from "./logger";
 import { errorHandler, notFound } from "./errors";
 import {
+  chatRouteFactory,
   listRouteFactory,
   taskRouteFactory,
   usersRouteFactory,
 } from "./routes";
 import { API_ROUTE } from "./config";
 
-const authPass: string = process.env.BASIC_AUTH as string;
-
 export const appFactory = (db: Db) => {
   const app = express();
   const usersRoutes = usersRouteFactory(db);
   const listRoutes = listRouteFactory(db);
   const taskRoutes = taskRouteFactory(db);
+  const chatRoutes = chatRouteFactory(db);
 
   app.use(
     cors({
@@ -28,12 +28,6 @@ export const appFactory = (db: Db) => {
     })
   );
   app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
-
-  // app.use(  // TODO
-  //   basicAuth({
-  //     users: { task_creator: authPass },
-  //   })
-  // );
 
   app.use(express.json());
 
@@ -46,6 +40,7 @@ export const appFactory = (db: Db) => {
   app.use(API_ROUTE, usersRoutes);
   app.use(API_ROUTE, listRoutes);
   app.use(API_ROUTE, taskRoutes);
+  app.use(API_ROUTE, chatRoutes);
 
   app.use(errorLogger);
 

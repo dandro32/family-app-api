@@ -1,4 +1,5 @@
 const routes: Record<string, string> = {
+  CHAT: "/chat",
   LIST_DONE: "/list/:listId/done",
   LIST: "/list/:listId",
   LISTS: "/lists",
