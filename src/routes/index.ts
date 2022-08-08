@@ -82,10 +82,9 @@ const chatRouteFactory = (db: Db) => {
   const { CHAT } = routes;
   const router: Router = Router();
   const chatRepository = chatRepositoryFactory(db);
-  const { addMessage, getAll } = chatControllerFactory(chatRepository);
+  const { getAll } = chatControllerFactory(chatRepository);
 
   router.get(CHAT, extractJWT, getAll);
-  router.post(CHAT, extractJWT, addMessage);
 
   return router;
 };

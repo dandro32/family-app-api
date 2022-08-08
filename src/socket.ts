@@ -1,8 +1,12 @@
 import { Server } from "socket.io";
 import http from "http";
 
-export const socketFactory = (app: any) => {
+import { Db } from "mongodb";
+import chatRepositoryFactory from "./controllers/chat/chatRepository";
+
+export const socketFactory = (app: any, db: Db) => {
   const server = http.createServer(app);
+  const { add } = chatRepositoryFactory(db);
 
   const io = new Server(server, {
     cors: {
@@ -16,8 +20,10 @@ export const socketFactory = (app: any) => {
     console.log("a user connected");
 
     socket.on("chatMessage", (msg) => {
-      console.log("chatMessage", msg);
-      io.emit("chatMessage", { ...msg, date: new Date().toLocaleString });
+      const newMassege = { ...msg, date: new Date().toLocaleString };
+
+      io.emit("chatMessage", newMassege);
+      add(newMassege);
     });
 
     socket.on("disconnect", () => {

@@ -11,7 +11,7 @@ export interface ChatMessage extends ChatMessageParams {
 }
 
 export interface ChatRepository {
-  add(message: ChatMessageParams): Promise<void>;
+  add(message: ChatMessageParams): void;
   findAll(): Promise<WithId<Document>[]>;
 }
 
