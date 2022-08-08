@@ -1,17 +1,14 @@
 import { Server } from "socket.io";
-import http from "http";
 
 import { Db } from "mongodb";
 import chatRepositoryFactory from "./controllers/chat/chatRepository";
 
 export const socketFactory = (app: any, db: Db) => {
-  const server = http.createServer(app);
   const { add } = chatRepositoryFactory(db);
 
-  const io = new Server(server, {
+  const io = new Server(app, {
     cors: {
       origin: ["http://localhost:3000", "https://family-app-fe.herokuapp.com"],
-      methods: ["GET", "POST"],
       credentials: true,
     },
   });
@@ -30,6 +27,4 @@ export const socketFactory = (app: any, db: Db) => {
       console.log("user disconnected");
     });
   });
-
-  return server;
 };
