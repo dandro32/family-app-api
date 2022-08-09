@@ -5,7 +5,7 @@ import { Db } from "mongodb";
 import chatRepositoryFactory from "./controllers/chat/chatRepository";
 
 export const socketFactory = (app: any, db: Db) => {
-  const server = http.createServer(app);
+  const server = http.createServer();
   const { add } = chatRepositoryFactory(db);
 
   const io = new Server(server, {
