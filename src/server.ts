@@ -7,13 +7,9 @@ const chatPort: string = (process.env.CHAT_PORT as string) || "80";
 
 (async () => {
   const app = appFactory(await connection);
-  const chatServer = socketFactory(app, await connection);
-
-  chatServer.listen(chatPort, function () {
-    console.log(`Family app socket connection is listening on ${chatPort}`);
-  });
-
-  app.listen(port, function () {
+  const server = app.listen(port, function () {
     console.log(`Family app API is listening on ${port}`);
   });
+
+  socketFactory(server, await connection);
 })();
