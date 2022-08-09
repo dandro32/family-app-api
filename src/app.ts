@@ -24,7 +24,12 @@ export const appFactory = (db: Db) => {
   app.use(
     cors({
       credentials: true,
-      origin: ["http://localhost:3000", "https://family-app-fe.herokuapp.com"],
+      origin: [
+        "http://localhost:3000",
+        "https://family-app-fe.herokuapp.com",
+        "https://family-app-fe.herokuapp.com/lists",
+        "https://family-app-fe.herokuapp.com/all-lists",
+      ],
     })
   );
   app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
