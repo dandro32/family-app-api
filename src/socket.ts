@@ -9,7 +9,8 @@ export const socketFactory = (server: any, db: Db) => {
 
   const io = new Server(server, {
     cors: {
-      origin: "*", //["http://localhost:3000", "https://family-app-fe.herokuapp.com"],
+      origin: ["http://localhost:3000", "https://family-app-fe.herokuapp.com"],
+      methods: ["GET", "POST"],
       credentials: true,
     },
   });
