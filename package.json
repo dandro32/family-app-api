@@ -15,7 +15,7 @@
     "watch-ts": "tsc -w",
     "prebuild": "npm run clean",
     "clean": "rm -rf ./dist",
-    "start": "ts-node -r dotenv/config src/server.ts",
+    "start": "ts-node -r dotenv/config src/server.ts && ts-node -r dotenv/config src/socket.ts",
     "watch": "ts-node-dev -r dotenv/config --respawn src/server.ts",
     "format": "prettier --print-width 120 --write 'src/**/*.ts'"
   },
