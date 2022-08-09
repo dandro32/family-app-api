@@ -3,6 +3,7 @@ import http from "http";
 
 import { Db } from "mongodb";
 import chatRepositoryFactory from "./controllers/chat/chatRepository";
+import { ChatMessageParams } from "./models/chat";
 
 export const socketFactory = (server: any, db: Db) => {
   const { add } = chatRepositoryFactory(db);
@@ -24,7 +25,11 @@ export const socketFactory = (server: any, db: Db) => {
     console.log("a user connected");
 
     socket.on("chatMessage", (msg) => {
-      const newMassege = { ...msg, date: new Date().toLocaleString() };
+      const newMassege: ChatMessageParams = {
+        ...msg,
+        date: new Date().toLocaleString(),
+        readed: false,
+      };
 
       io.emit("chatMessage", newMassege);
       add(newMassege);

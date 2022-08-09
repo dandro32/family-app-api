@@ -4,6 +4,7 @@ export interface ChatMessageParams {
   name: string;
   message: string;
   date: string;
+  readed: boolean;
 }
 
 export interface ChatMessage extends ChatMessageParams {
