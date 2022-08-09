@@ -24,7 +24,7 @@ export const socketFactory = (server: any, db: Db) => {
     console.log("a user connected");
 
     socket.on("chatMessage", (msg) => {
-      const newMassege = { ...msg, date: new Date().toLocaleString };
+      const newMassege = { ...msg, date: new Date().toLocaleString() };
 
       io.emit("chatMessage", newMassege);
       add(newMassege);
